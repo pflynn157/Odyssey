@@ -131,7 +131,7 @@ QString BrowserWidget::currentDirName() {
 
 void BrowserWidget::startRefresh() {
     thread = new FileSystemWatcher(this);
-    thread->start(2000);
+    thread->start(1000);
 }
 
 void BrowserWidget::stopRefresh() {
