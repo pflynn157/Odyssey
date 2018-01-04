@@ -2,6 +2,7 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QInputDialog>
+#include <iostream>
 
 #include "actions.hh"
 #include "clipboard.hh"
@@ -50,6 +51,82 @@ void Actions::newFile() {
             }
         }
     }
+}
+
+void Actions::rename() {
+    QString currentPath = TabWidget::currentWidget()->fsCurrentPath();
+    QString currentName = TabWidget::currentWidget()->currentItemName();
+
+    QInputDialog dialog;
+    dialog.setWindowTitle("Rename");
+    dialog.setLabelText("Enter your new file/folder name:");
+    dialog.setTextValue(currentName);
+    if (dialog.exec()) {
+        QString newName = dialog.textValue();
+        if ((newName==currentName)||(QFile(currentPath+newName).exists())) {
+            QMessageBox msg;
+            msg.setWindowTitle("Error");
+            msg.setIcon(QMessageBox::Critical);
+            msg.setText("A file or folder already exists with that same name.");
+            msg.exec();
+        } else {
+            QString newPath = currentPath+newName;
+            QString oldPath = currentPath+currentName;
+            bool ret = QFile(oldPath).rename(newPath);
+            if (ret==false) {
+                QMessageBox msg;
+                msg.setWindowTitle("Error");
+                msg.setIcon(QMessageBox::Critical);
+                msg.setText("There was an error renaming this file or folder!");
+                msg.setDetailedText("This could mean that the file is read-only, "
+                                    "or that you do not have the proper permissions "
+                                    "to access it.");
+                msg.exec();
+            }
+        }
+    }
+}
+
+void Actions::deleteFile() {
+    QMessageBox msg;
+    msg.setWindowTitle("Warning!");
+    msg.setIcon(QMessageBox::Warning);
+    msg.setText("This will permanently delete this file or folder.\n"
+                "If it is a folder, all its contents will be deleted also.\n"
+                "This CANNOT be undone!\n\n"
+                "Do you wish to continue?");
+    msg.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    int ret = msg.exec();
+    if (ret==QMessageBox::Yes) {
+        QString toDelete = TabWidget::currentWidget()->fsCurrentPath();
+        toDelete+=TabWidget::currentWidget()->currentItemName();
+        bool ret;
+        if (QFileInfo(toDelete).isDir()) {
+            ret = QDir(toDelete).removeRecursively();
+        } else {
+            ret = QFile(toDelete).remove();
+        }
+        if (ret==false) {
+            QMessageBox msg;
+            msg.setWindowTitle("Error");
+            msg.setIcon(QMessageBox::Critical);
+            msg.setText("There was an error deleting this file or folder!");
+            msg.setDetailedText("This could mean that the file is read-only, "
+                                "or that you do not have the proper permissions "
+                                "to access it.");
+            msg.exec();
+        }
+    }
+}
+
+void Actions::deleteFolder() {
+    //We'll just check to see if the object in question
+    //is a file or folder in the function above, and then delete
+    //accordingly.
+    //This will use less code, and make things cleaner.
+    //We'll keep this as a separate function in case we wish to change
+    //anything later on.
+    deleteFile();
 }
 
 void Actions::paste() {

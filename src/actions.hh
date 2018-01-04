@@ -6,6 +6,9 @@ class Actions {
 public:
     static void newFolder();
     static void newFile();
+    static void rename();
+    static void deleteFile();
+    static void deleteFolder();
     static void paste();
 private:
     static QString handleDuplicate(QString newAddr);
