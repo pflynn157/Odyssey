@@ -1,9 +1,56 @@
 #include <QFile>
 #include <QDir>
 #include <QMessageBox>
+#include <QInputDialog>
 
 #include "actions.hh"
 #include "clipboard.hh"
+#include "tabwidget.hh"
+
+void Actions::newFolder() {
+    QInputDialog dialog;
+    dialog.setWindowTitle("Create Folder");
+    dialog.setLabelText("What do you want to name your folder?");
+    dialog.setTextValue("untitled folder");
+    if (dialog.exec()) {
+        QString val = dialog.textValue();
+        QString path = TabWidget::currentWidget()->fsCurrentPath();
+        path+=val;
+        if (QDir(path).exists()) {
+            QMessageBox msg;
+            msg.setWindowTitle("Error");
+            msg.setIcon(QMessageBox::Critical);
+            msg.setText("A file or folder with that name already exists.");
+            msg.exec();
+        } else {
+            QDir().mkdir(path);
+        }
+    }
+}
+
+void Actions::newFile() {
+    QInputDialog dialog;
+    dialog.setWindowTitle("Create File");
+    dialog.setLabelText("What do you want to name your file?");
+    dialog.setTextValue("untitled file");
+    if (dialog.exec()) {
+        QString val = dialog.textValue();
+        QString path = TabWidget::currentWidget()->fsCurrentPath();
+        path+=val;
+        if (QDir(path).exists()) {
+            QMessageBox msg;
+            msg.setWindowTitle("Error");
+            msg.setIcon(QMessageBox::Critical);
+            msg.setText("A file or folder with that name already exists.");
+            msg.exec();
+        } else {
+            QFile file(path);
+            if (file.open(QFile::WriteOnly)) {
+                file.close();
+            }
+        }
+    }
+}
 
 void Actions::paste() {
     if (!clipboard.oldPath.endsWith("/")) {

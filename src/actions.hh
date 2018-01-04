@@ -4,6 +4,8 @@
 
 class Actions {
 public:
+    static void newFolder();
+    static void newFile();
     static void paste();
 private:
     static QString handleDuplicate(QString newAddr);
