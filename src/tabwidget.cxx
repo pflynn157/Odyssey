@@ -26,7 +26,6 @@ TabWidget::TabWidget(NavBar *navbar, AddressBarText *addrTextBar)
     connect(tabs,SIGNAL(tabCloseRequested(int)),this,SLOT(onTabClosed(int)));
 
     addNewTab();
-    addNewTab("/");
 }
 
 TabWidget::~TabWidget() {
