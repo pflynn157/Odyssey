@@ -4,6 +4,7 @@
 #include "window.hh"
 #include "tabwidget.hh"
 #include "navbar.hh"
+#include "addressbar_text.hh"
 
 using namespace CppLib;
 
@@ -19,7 +20,10 @@ Window::Window(QWidget *parent)
     navbar = new NavBar;
     this->addToolBar(navbar);
 
-    TabWidget *tabPane = new TabWidget(navbar);
+    AddressBarText *addrTxt = new AddressBarText;
+    this->addToolBar(addrTxt);
+
+    TabWidget *tabPane = new TabWidget(navbar,addrTxt);
     this->setCentralWidget(tabPane);
 }
 

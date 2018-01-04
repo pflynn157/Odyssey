@@ -6,11 +6,12 @@
 
 #include "browserwidget.hh"
 #include "navbar.hh"
+#include "addressbar_text.hh"
 
 class TabWidget : public QWidget {
     Q_OBJECT
 public:
-    explicit TabWidget(NavBar *navbar);
+    explicit TabWidget(NavBar *navbar, AddressBarText *addrTextBar);
     ~TabWidget();
     static QTabWidget *tabs;
     static void addNewTab(QString path);
@@ -19,6 +20,7 @@ public:
     static void updateTabName();
 private:
     static NavBar *navigationBar;
+    static AddressBarText *addrText;
     QVBoxLayout *layout;
 private slots:
     void onTabsChanged();

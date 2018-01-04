@@ -30,13 +30,15 @@ SOURCES += \
         window.cxx \
     tabwidget.cxx \
     browserwidget.cxx \
-    navbar.cxx
+    navbar.cxx \
+    addressbar_text.cxx
 
 HEADERS += \
         window.hh \
     tabwidget.hh \
     browserwidget.hh \
-    navbar.hh
+    navbar.hh \
+    addressbar_text.hh
 
 RESOURCES += \
     rsc.qrc
