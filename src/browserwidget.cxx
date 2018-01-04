@@ -44,8 +44,8 @@ void BrowserWidget::loadDir(QString path, bool recordHistory, bool firstLoad) {
     this->clear();
     QDir dir(path);
 
-    QStringList folders = dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot, QDir::Name);
-    QStringList files = dir.entryList(QDir::Files | QDir::NoDotAndDotDot, QDir::Name);
+    QStringList folders = dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot, QDir::Name | QDir::IgnoreCase);
+    QStringList files = dir.entryList(QDir::Files | QDir::NoDotAndDotDot, QDir::Name | QDir::IgnoreCase);
 
     QVector<QListWidgetItem *> folderItems, fileItems;
 
