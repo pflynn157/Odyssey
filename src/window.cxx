@@ -5,6 +5,7 @@
 #include "tabwidget.hh"
 #include "navbar.hh"
 #include "addressbar_text.hh"
+#include "endtoolbar.hh"
 
 using namespace CppLib;
 

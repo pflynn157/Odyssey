@@ -4,6 +4,7 @@
 #include <QLineEdit>
 
 #include "browserwidget.hh"
+#include "endtoolbar.hh"
 
 class AddressBarText : public QToolBar {
     Q_OBJECT
@@ -14,6 +15,8 @@ public:
 private:
     BrowserWidget *bWidget;
     QLineEdit *addressEntry;
+    EndToolbar *endtoolbar;
 private slots:
     void onAddrEntryReturnPressed();
+    void onDirChanged(QString path);
 };
