@@ -1,4 +1,5 @@
 #include <QVariant>
+#include <QIcon>
 #include <cpplib/settings.hh>
 
 #include "window.hh"
@@ -13,6 +14,7 @@ Window::Window(QWidget *parent)
     : QMainWindow(parent)
 {
     this->setWindowTitle("CppExplorer");
+    this->setWindowIcon(QIcon::fromTheme("system-file-manager"));
 
     int winX = QVariant(Settings::getSetting("window/x","700")).toInt();
     int winY = QVariant(Settings::getSetting("window/y","500")).toInt();
