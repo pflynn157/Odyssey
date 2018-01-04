@@ -26,6 +26,7 @@ public:
     QString currentDirName();
     void startRefresh();
     void stopRefresh();
+    QString currentItemName();
 protected:
     void mousePressEvent(QMouseEvent *event);
 private:
@@ -33,8 +34,10 @@ private:
     QString currentPath;
     QStringList historyList;
     FileSystemWatcher *thread;
+    QString currentItemTxt;
 private slots:
     void onItemDoubleClicked(QListWidgetItem *item);
+    void onItemClicked(QListWidgetItem *item);
 signals:
     void dirChanged(QString path);
     void historyChanged();

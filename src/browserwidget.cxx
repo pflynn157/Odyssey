@@ -1,15 +1,19 @@
 #include <QDir>
 #include <QVector>
 #include <QIcon>
-#include <iostream>
+#include <QCursor>
 
 #include "browserwidget.hh"
 #include "tabwidget.hh"
+#include "menu/folder_contextmenu.hh"
+#include "menu/file_contextmenu.hh"
+#include "menu/background_contextmenu.hh"
 
 BrowserWidget::BrowserWidget() {
     defaultGridSize = this->gridSize();
     setIconView();
     connect(this,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(onItemDoubleClicked(QListWidgetItem*)));
+    connect(this,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(onItemClicked(QListWidgetItem*)));
 }
 
 void BrowserWidget::setIconView() {
@@ -109,7 +113,11 @@ void BrowserWidget::reload() {
 }
 
 QString BrowserWidget::fsCurrentPath() {
-    return currentPath;
+    QString path = currentPath;
+    if (!path.endsWith("/")) {
+        path+="/";
+    }
+    return path;
 }
 
 QString BrowserWidget::currentDirName() {
@@ -130,6 +138,10 @@ void BrowserWidget::stopRefresh() {
     thread->stop();
 }
 
+QString BrowserWidget::currentItemName() {
+    return currentItemTxt;
+}
+
 void BrowserWidget::mousePressEvent(QMouseEvent *event) {
     if (event->button()==Qt::LeftButton) {
         QListWidgetItem *item = this->itemAt(event->x(),event->y());
@@ -138,6 +150,22 @@ void BrowserWidget::mousePressEvent(QMouseEvent *event) {
             for (int i = 0; i<selectedItems.size(); i++) {
                 selectedItems.at(i)->setSelected(false);
             }
+        }
+    } else if (event->button()==Qt::RightButton) {
+        QListWidgetItem *item = this->itemAt(event->x(),event->y());
+        if (item!=nullptr) {
+            currentItemTxt = item->text();
+            QString complete = fsCurrentPath()+currentItemTxt;
+            if (QFileInfo(complete).isDir()) {
+                FolderContextMenu menu(this);
+                menu.exec(QCursor::pos());
+            } else {
+                FileContextMenu menu(this);
+                menu.exec(QCursor::pos());
+            }
+        } else {
+            BackgroundContextMenu menu(this);
+            menu.exec(QCursor::pos());
         }
     }
     QListWidget::mousePressEvent(event);
@@ -152,6 +180,10 @@ void BrowserWidget::onItemDoubleClicked(QListWidgetItem *item) {
     if (QFileInfo(path).isDir()) {
         loadDir(path);
     }
+}
+
+void BrowserWidget::onItemClicked(QListWidgetItem *item) {
+    currentItemTxt = item->text();
 }
 
 //FileSystemWatcher class

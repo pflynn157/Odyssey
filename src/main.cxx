@@ -2,8 +2,11 @@
 #include <cpplib/settings.hh>
 
 #include "window.hh"
+#include "clipboard.hh"
 
 using namespace CppLib;
+
+Clipboard clipboard;
 
 int main(int argc, char *argv[]) {
     Settings::registerApp("cpp-explorer");

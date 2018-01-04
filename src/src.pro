@@ -32,7 +32,11 @@ SOURCES += \
     browserwidget.cxx \
     navbar.cxx \
     addressbar_text.cxx \
-    endtoolbar.cxx
+    endtoolbar.cxx \
+    menu/folder_contextmenu.cxx \
+    menu/file_contextmenu.cxx \
+    menu/background_contextmenu.cxx \
+    actions.cxx
 
 HEADERS += \
         window.hh \
@@ -40,7 +44,12 @@ HEADERS += \
     browserwidget.hh \
     navbar.hh \
     addressbar_text.hh \
-    endtoolbar.hh
+    endtoolbar.hh \
+    menu/folder_contextmenu.hh \
+    clipboard.hh \
+    menu/file_contextmenu.hh \
+    menu/background_contextmenu.hh \
+    actions.hh
 
 RESOURCES += \
     rsc.qrc
