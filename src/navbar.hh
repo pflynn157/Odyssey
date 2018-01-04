@@ -13,10 +13,12 @@ public:
     void setBrowserWidget(BrowserWidget *b);
 private:
     BrowserWidget *bWidget;
-    QToolButton *goBack, *goUp;
+    QToolButton *goBack, *goUp, *refresh, *home;
 private slots:
     void onGoUpClicked();
     void onGoBackClicked();
+    void onRefreshClicked();
+    void onHomeClicked();
     void onDirChanged(QString path);
     void onHistoryChanged();
 };
