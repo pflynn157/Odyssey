@@ -96,14 +96,19 @@ void Actions::rename() {
 }
 
 void Actions::trash() {
-    QString toTrash = TabWidget::currentWidget()->fsCurrentPath();
-    toTrash+=TabWidget::currentWidget()->currentItemName();
-    Trash::trashFile(toTrash);
+    auto list = TabWidget::currentWidget()->currentItemNames();
+    QString path = TabWidget::currentWidget()->fsCurrentPath();
+    for (int i = 0; i<list.size(); i++) {
+        QString toTrash = path+list.at(i);
+        Trash::trashFile(toTrash);
+    }
 }
 
 void Actions::restore() {
-    QString name = TabWidget::currentWidget()->currentItemName();
-    Trash::restoreFile(name);
+    auto list = TabWidget::currentWidget()->currentItemNames();
+    for (int i = 0; i<list.size(); i++) {
+        Trash::restoreFile(list.at(i));
+    }
 }
 
 void Actions::deleteFile() {
