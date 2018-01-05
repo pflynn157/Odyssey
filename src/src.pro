@@ -39,7 +39,8 @@ SOURCES += \
     actions.cxx \
     tinyxml2.cpp \
     trash.cxx \
-    trashbar.cxx
+    trashbar.cxx \
+    menu/multi_contextmenu.cxx
 
 HEADERS += \
         window.hh \
@@ -55,7 +56,8 @@ HEADERS += \
     actions.hh \
     tinyxml2.h \
     trash.hh \
-    trashbar.hh
+    trashbar.hh \
+    menu/multi_contextmenu.hh
 
 RESOURCES += \
     rsc.qrc

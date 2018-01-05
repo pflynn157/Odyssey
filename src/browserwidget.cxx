@@ -10,6 +10,7 @@
 #include "menu/folder_contextmenu.hh"
 #include "menu/file_contextmenu.hh"
 #include "menu/background_contextmenu.hh"
+#include "menu/multi_contextmenu.hh"
 #include "trash.hh"
 
 BrowserWidget::BrowserWidget()
@@ -217,14 +218,19 @@ void ListWidget::mousePressEvent(QMouseEvent *event) {
     } else if (event->button()==Qt::RightButton) {
         QListWidgetItem *item = this->itemAt(event->x(),event->y());
         if (item!=nullptr) {
-            bWidget->currentItemTxt = item->text();
-            QString complete = bWidget->fsCurrentPath()+bWidget->currentItemTxt;
-            if (QFileInfo(complete).isDir()) {
-                FolderContextMenu menu(bWidget);
+            if (this->selectedItems().size()>1) {
+                MultiContextMenu menu(bWidget);
                 menu.exec(QCursor::pos());
             } else {
-                FileContextMenu menu(bWidget);
-                menu.exec(QCursor::pos());
+                bWidget->currentItemTxt = item->text();
+                QString complete = bWidget->fsCurrentPath()+bWidget->currentItemTxt;
+                if (QFileInfo(complete).isDir()) {
+                    FolderContextMenu menu(bWidget);
+                    menu.exec(QCursor::pos());
+                } else {
+                    FileContextMenu menu(bWidget);
+                    menu.exec(QCursor::pos());
+                }
             }
         } else {
             BackgroundContextMenu menu(bWidget);
