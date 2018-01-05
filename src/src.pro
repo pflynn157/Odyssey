@@ -42,7 +42,8 @@ SOURCES += \
     trashbar.cxx \
     menu/multi_contextmenu.cxx \
     searchbar.cxx \
-    menubar/filemenu.cxx
+    menubar/filemenu.cxx \
+    menubar/editmenu.cxx
 
 HEADERS += \
         window.hh \
@@ -61,7 +62,8 @@ HEADERS += \
     trashbar.hh \
     menu/multi_contextmenu.hh \
     searchbar.hh \
-    menubar/filemenu.hh
+    menubar/filemenu.hh \
+    menubar/editmenu.hh
 
 RESOURCES += \
     rsc.qrc

@@ -215,6 +215,10 @@ QStringList BrowserWidget::currentItemNames() {
     return list;
 }
 
+void BrowserWidget::selectAll() {
+    listWidget->selectAll();
+}
+
 void BrowserWidget::onItemDoubleClicked(QListWidgetItem *item) {
     QString path = currentPath;
     if (!path.endsWith("/")) {

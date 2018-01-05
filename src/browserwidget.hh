@@ -66,6 +66,7 @@ public:
     void stopRefresh();
     QString currentItemName();
     QStringList currentItemNames();
+    void selectAll();
 private:
     QVBoxLayout *layout;
     QListWidget *listWidget;
