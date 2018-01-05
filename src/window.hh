@@ -32,7 +32,12 @@
 #include <QContextMenuEvent>
 
 #include "navbar.hh"
+#include "addressbar_text.hh"
+#include "tabwidget.hh"
 
+#include "menubar/filemenu.hh"
+
+class FileMenu;
 class MenuBar;
 
 class Window : public QMainWindow {
@@ -45,6 +50,10 @@ protected:
     void closeEvent(QCloseEvent *event);
 private:
     NavBar *navbar;
+    MenuBar *menubar;
+    FileMenu *filemenu;
+    AddressBarText *addrTxt;
+    TabWidget *tabPane;
 };
 
 class MenuBar : public QMenuBar {

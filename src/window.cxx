@@ -29,42 +29,40 @@
 #include <cpplib/settings.hh>
 
 #include "window.hh"
-#include "tabwidget.hh"
-#include "navbar.hh"
-#include "addressbar_text.hh"
-#include "endtoolbar.hh"
-
-#include "menubar/filemenu.hh"
 
 using namespace CppLib;
 
 Window::Window(QWidget *parent)
-    : QMainWindow(parent)
+    : QMainWindow(parent),
+      menubar(new MenuBar)
 {
     this->setWindowTitle("CppExplorer");
     this->setWindowIcon(QIcon::fromTheme("system-file-manager"));
+    this->setMenuBar(menubar);
 
     int winX = QVariant(Settings::getSetting("window/x","700")).toInt();
     int winY = QVariant(Settings::getSetting("window/y","500")).toInt();
     this->resize(winX,winY);
 
-    MenuBar *menubar = new MenuBar;
-    this->setMenuBar(menubar);
-
-    FileMenu *filemenu = new FileMenu(this);
+    filemenu = new FileMenu(this);
     menubar->addMenu(filemenu);
 
     navbar = new NavBar;
     this->addToolBar(navbar);
 
-    AddressBarText *addrTxt = new AddressBarText;
+    addrTxt = new AddressBarText;
     this->addToolBar(addrTxt);
 
-    TabWidget *tabPane = new TabWidget(navbar,addrTxt);
+    tabPane = new TabWidget(navbar,addrTxt);
     this->setCentralWidget(tabPane);
 }
 
 Window::~Window() {
+    delete menubar;
+    delete filemenu;
+    delete navbar;
+    delete addrTxt;
+    delete tabPane;
 }
 
 void Window::closeApp() {

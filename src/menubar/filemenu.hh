@@ -31,6 +31,8 @@
 
 #include "../window.hh"
 
+class Window;
+
 class FileMenu : public QMenu {
     Q_OBJECT
 public:
