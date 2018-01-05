@@ -28,6 +28,7 @@
 
 #include <QMainWindow>
 #include <QCloseEvent>
+#include <QKeyEvent>
 #include <QMenuBar>
 #include <QContextMenuEvent>
 
@@ -48,6 +49,7 @@ public:
     void closeApp();
 protected:
     void closeEvent(QCloseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
 private:
     NavBar *navbar;
     MenuBar *menubar;

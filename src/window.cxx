@@ -26,9 +26,12 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QVariant>
 #include <QIcon>
+#include <QApplication>
 #include <cpplib/settings.hh>
 
 #include "window.hh"
+#include "actions.hh"
+#include "clipboard.hh"
 
 using namespace CppLib;
 
@@ -73,6 +76,39 @@ void Window::closeApp() {
 void Window::closeEvent(QCloseEvent *event) {
     closeApp();
     event->accept();
+}
+
+void Window::keyPressEvent(QKeyEvent *event) {
+    if (event->modifiers()==Qt::ControlModifier) {
+        switch (event->key()) {
+        case Qt::Key_Q: {
+            closeApp();
+            qApp->exit(0);
+        } break;
+        case Qt::Key_T: TabWidget::addNewTab(); break;
+        case Qt::Key_N: Actions::newFile(); break;
+        case Qt::Key_X: {
+            clipboard.fileName = TabWidget::currentWidget()->currentItemNames();
+            clipboard.oldPath = TabWidget::currentWidget()->fsCurrentPath();
+            clipboard.action = Clipboard_Actions::CUT;
+        } break;
+        case Qt::Key_C: {
+            clipboard.fileName = TabWidget::currentWidget()->currentItemNames();
+            clipboard.oldPath = TabWidget::currentWidget()->fsCurrentPath();
+            clipboard.action = Clipboard_Actions::COPY;
+        } break;
+        case Qt::Key_V: {
+            clipboard.newPath = TabWidget::currentWidget()->fsCurrentPath();
+            Actions::paste();
+        } break;
+        }
+    } else if (event->modifiers()==(Qt::ControlModifier | Qt::ShiftModifier)) {
+        switch (event->key()) {
+        case Qt::Key_N: Actions::newFolder(); break;
+        case Qt::Key_T: TabWidget::closeCurrentTab(); break;
+        }
+    }
+    QMainWindow::keyPressEvent(event);
 }
 
 //MenuBar
