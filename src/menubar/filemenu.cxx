@@ -24,61 +24,64 @@
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#include <QVariant>
 #include <QIcon>
-#include <cpplib/settings.hh>
+#include <QApplication>
 
-#include "window.hh"
+#include "filemenu.hh"
+#include "actions.hh"
 #include "tabwidget.hh"
-#include "navbar.hh"
-#include "addressbar_text.hh"
-#include "endtoolbar.hh"
 
-#include "menubar/filemenu.hh"
+FileMenu::FileMenu(Window *p) {
+    parent = p;
 
-using namespace CppLib;
+    this->setTitle("File");
 
-Window::Window(QWidget *parent)
-    : QMainWindow(parent)
-{
-    this->setWindowTitle("CppExplorer");
-    this->setWindowIcon(QIcon::fromTheme("system-file-manager"));
+    newTab = new QAction(QIcon::fromTheme("tab-new"),"New Tab",this);
+    closeTab = new QAction(QIcon::fromTheme("tab-close"),"Close Tab",this);
+    newFile = new QAction(QIcon::fromTheme("document-new"),"New File",this);
+    newFolder = new QAction(QIcon::fromTheme("folder-new"),"New Folder",this);
+    quit = new QAction(QIcon::fromTheme("application-exit"),"Exit",this);
 
-    int winX = QVariant(Settings::getSetting("window/x","700")).toInt();
-    int winY = QVariant(Settings::getSetting("window/y","500")).toInt();
-    this->resize(winX,winY);
+    connect(newTab,&QAction::triggered,this,&FileMenu::onNewTabClicked);
+    connect(closeTab,&QAction::triggered,this,&FileMenu::onCloseTabClicked);
+    connect(newFile,&QAction::triggered,this,&FileMenu::onNewFileClicked);
+    connect(newFolder,&QAction::triggered,this,&FileMenu::onNewFolderClicked);
+    connect(quit,&QAction::triggered,this,&FileMenu::onQuitClicked);
 
-    MenuBar *menubar = new MenuBar;
-    this->setMenuBar(menubar);
-
-    FileMenu *filemenu = new FileMenu(this);
-    menubar->addMenu(filemenu);
-
-    navbar = new NavBar;
-    this->addToolBar(navbar);
-
-    AddressBarText *addrTxt = new AddressBarText;
-    this->addToolBar(addrTxt);
-
-    TabWidget *tabPane = new TabWidget(navbar,addrTxt);
-    this->setCentralWidget(tabPane);
+    this->addAction(newTab);
+    this->addAction(closeTab);
+    this->addSeparator();
+    this->addAction(newFile);
+    this->addAction(newFolder);
+    this->addSeparator();
+    this->addAction(quit);
 }
 
-Window::~Window() {
+FileMenu::~FileMenu() {
+    delete newTab;
+    delete closeTab;
+    delete newFile;
+    delete newFolder;
+    delete quit;
 }
 
-void Window::closeApp() {
-    Settings::writeSetting("window/x",QVariant(this->width()).toString());
-    Settings::writeSetting("window/y",QVariant(this->height()).toString());
+void FileMenu::onNewTabClicked() {
+    TabWidget::addNewTab();
 }
 
-void Window::closeEvent(QCloseEvent *event) {
-    closeApp();
-    event->accept();
+void FileMenu::onCloseTabClicked() {
+    TabWidget::closeCurrentTab();
 }
 
-//MenuBar
-//This is a custom menubar class. The only reason for its existence is to
-//suppress the default Qt context menu that it has
-void MenuBar::contextMenuEvent(QContextMenuEvent *) {
+void FileMenu::onNewFileClicked() {
+    Actions::newFile();
+}
+
+void FileMenu::onNewFolderClicked() {
+    Actions::newFolder();
+}
+
+void FileMenu::onQuitClicked() {
+    parent->closeApp();
+    qApp->exit(0);
 }

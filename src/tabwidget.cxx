@@ -77,6 +77,16 @@ void TabWidget::addNewTab() {
     addNewTab(QDir::homePath());
 }
 
+void TabWidget::closeCurrentTab() {
+    int index = tabs->currentIndex();
+    if (tabs->count()==1) {
+        addNewTab();
+    }
+    BrowserWidget *b = static_cast<BrowserWidget *>(tabs->widget(index));
+    b->stopRefresh();
+    delete b;
+}
+
 BrowserWidget *TabWidget::currentWidget() {
     BrowserWidget *w = static_cast<BrowserWidget *>(tabs->currentWidget());
     return w;
