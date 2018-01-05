@@ -10,6 +10,9 @@
 #include <QMouseEvent>
 #include <QTimer>
 
+#include "trashbar.hh"
+
+class TrashBar;
 class ListWidget;
 class FileSystemWatcher;
 
@@ -39,6 +42,7 @@ private:
     QStringList historyList;
     FileSystemWatcher *thread;
     QString currentItemTxt;
+    TrashBar *trashbar;
 private slots:
     void onItemDoubleClicked(QListWidgetItem *item);
     void onItemClicked(QListWidgetItem *item);

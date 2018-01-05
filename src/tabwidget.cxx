@@ -6,7 +6,6 @@
 QTabWidget *TabWidget::tabs;
 NavBar *TabWidget::navigationBar;
 AddressBarText *TabWidget::addrText;
-TrashBar *TabWidget::trashbar;
 
 TabWidget::TabWidget(NavBar *navbar, AddressBarText *addrTextBar)
     : layout(new QVBoxLayout)
@@ -16,10 +15,6 @@ TabWidget::TabWidget(NavBar *navbar, AddressBarText *addrTextBar)
 
     layout->setContentsMargins(0,0,0,0);
     this->setLayout(layout);
-
-    trashbar = new TrashBar;
-    trashbar->hide();
-    layout->addWidget(trashbar,0,Qt::AlignTop);
 
     tabs = new QTabWidget;
     tabs->setTabsClosable(true);
@@ -64,11 +59,6 @@ BrowserWidget *TabWidget::currentWidget() {
 void TabWidget::updateTabName() {
     BrowserWidget *w = currentWidget();
     tabs->setTabText(tabs->currentIndex(),w->currentDirName());
-}
-
-void TabWidget::displayTrashBar(bool disp) {
-    trashbar->setBrowserWidget(currentWidget());
-    trashbar->setVisible(disp);
 }
 
 void TabWidget::onTabsChanged() {

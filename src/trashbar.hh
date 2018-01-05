@@ -6,6 +6,8 @@
 
 #include "browserwidget.hh"
 
+class BrowserWidget;
+
 class TrashBar : public QWidget {
     Q_OBJECT
 public:

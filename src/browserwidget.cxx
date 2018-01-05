@@ -18,6 +18,12 @@ BrowserWidget::BrowserWidget()
 {
     layout->setContentsMargins(0,0,0,0);
     this->setLayout(layout);
+
+    trashbar = new TrashBar;
+    trashbar->setBrowserWidget(this);
+    trashbar->hide();
+
+    layout->addWidget(trashbar,0,Qt::AlignTop);
     layout->addWidget(listWidget);
 
     defaultGridSize = listWidget->gridSize();
@@ -88,11 +94,12 @@ void BrowserWidget::loadDir(QString path, bool recordHistory, bool firstLoad) {
 
     if (firstLoad==false) {
         TabWidget::updateTabName();
-        if (fsCurrentPath()==Trash::folderPath) {
-            TabWidget::displayTrashBar(true);
-        } else {
-            TabWidget::displayTrashBar(false);
-        }
+    }
+
+    if (fsCurrentPath()==Trash::folderPath) {
+        trashbar->show();
+    } else {
+        trashbar->hide();
     }
 }
 
