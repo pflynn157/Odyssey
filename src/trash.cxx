@@ -95,7 +95,7 @@ void Trash::restoreFile(QString filename) {
 }
 
 void Trash::deleteCurrentFile() {
-    QString filename = TabWidget::currentWidget()->currentItemName();
+    auto list = TabWidget::currentWidget()->currentItemNames();
     Actions::deleteFile();
 
     XMLDocument *doc = new XMLDocument;
@@ -104,20 +104,23 @@ void Trash::deleteCurrentFile() {
     if (root==nullptr) {
         return;
     }
-    XMLElement *child, *old;
-    child = root->FirstChildElement("item");
-    while (child!=nullptr) {
-        QString attr = QString(child->Attribute("name"));
-        if (attr==filename) {
-            break;
+    for (int i = 0; i<list.size(); i++) {
+        QString filename = list.at(i);
+        XMLElement *child, *old;
+        child = root->FirstChildElement("item");
+        while (child!=nullptr) {
+            QString attr = QString(child->Attribute("name"));
+            if (attr==filename) {
+                break;
+            }
+            old = child;
+            child = old->NextSiblingElement("item");
         }
-        old = child;
-        child = old->NextSiblingElement("item");
+        if (child==nullptr) {
+            continue;
+        }
+        root->DeleteChild(child);
     }
-    if (child==nullptr) {
-        return;
-    }
-    root->DeleteChild(child);
     doc->SaveFile(filePath.toStdString().c_str());
 }
 
