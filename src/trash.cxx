@@ -12,6 +12,9 @@
 #include <QFile>
 #include <QDir>
 #include <QTextStream>
+#include <QStringList>
+#include <QFileInfo>
+#include <QMessageBox>
 
 #include "trash.hh"
 #include "tinyxml2.h"
@@ -92,11 +95,53 @@ void Trash::restoreFile(QString filename) {
 }
 
 void Trash::deleteCurrentFile() {
-    //TODO: Implement
+    QString filename = TabWidget::currentWidget()->currentItemName();
+    Actions::deleteFile();
+
+    XMLDocument *doc = new XMLDocument;
+    doc->LoadFile(filePath.toStdString().c_str());
+    XMLElement *root = doc->FirstChildElement("trashcan");
+    if (root==nullptr) {
+        return;
+    }
+    XMLElement *child, *old;
+    child = root->FirstChildElement("item");
+    while (child!=nullptr) {
+        QString attr = QString(child->Attribute("name"));
+        if (attr==filename) {
+            break;
+        }
+        old = child;
+        child = old->NextSiblingElement("item");
+    }
+    if (child==nullptr) {
+        return;
+    }
+    root->DeleteChild(child);
+    doc->SaveFile(filePath.toStdString().c_str());
 }
 
 void Trash::emptyTrash() {
-    //TODO: Implement
+    QMessageBox msg;
+    msg.setWindowTitle("Warning");
+    msg.setIcon(QMessageBox::Warning);
+    msg.setText("This will permanently delete all files in the trash. "
+                "This action CANNOT be undone. Do you wish to continue?");
+    msg.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    int ret = msg.exec();
+    if (ret==QMessageBox::Yes) {
+        QStringList contents = QDir(folderPath).entryList(QDir::AllEntries | QDir::NoDotAndDotDot);
+        for (int i = 0; i<contents.size(); i++) {
+            QString current = folderPath+contents.at(i);
+            if (QFileInfo(current).isDir()) {
+                QDir(current).removeRecursively();
+            } else {
+                QFile(current).remove();
+            }
+        }
+        QFile(filePath).remove();
+        genTrashInfo();
+    }
 }
 
 void Trash::genTrashInfo() {

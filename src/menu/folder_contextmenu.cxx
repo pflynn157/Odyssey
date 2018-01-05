@@ -86,5 +86,9 @@ void FolderContextMenu::onRestoreFolderClicked() {
 }
 
 void FolderContextMenu::onDeleteFolderClicked() {
-    Actions::deleteFolder();
+    if (TabWidget::currentWidget()->fsCurrentPath()==Trash::folderPath) {
+        Trash::deleteCurrentFile();
+    } else {
+        Actions::deleteFolder();
+    }
 }
