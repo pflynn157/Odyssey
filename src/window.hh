@@ -28,8 +28,12 @@
 
 #include <QMainWindow>
 #include <QCloseEvent>
+#include <QMenuBar>
+#include <QContextMenuEvent>
 
 #include "navbar.hh"
+
+class MenuBar;
 
 class Window : public QMainWindow {
     Q_OBJECT
@@ -41,4 +45,10 @@ protected:
     void closeEvent(QCloseEvent *event);
 private:
     NavBar *navbar;
+};
+
+class MenuBar : public QMenuBar {
+    Q_OBJECT
+protected:
+    void contextMenuEvent(QContextMenuEvent *);
 };

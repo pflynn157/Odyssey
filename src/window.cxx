@@ -46,6 +46,9 @@ Window::Window(QWidget *parent)
     int winY = QVariant(Settings::getSetting("window/y","500")).toInt();
     this->resize(winX,winY);
 
+    MenuBar *menubar = new MenuBar;
+    this->setMenuBar(menubar);
+
     navbar = new NavBar;
     this->addToolBar(navbar);
 
@@ -67,4 +70,10 @@ void Window::closeApp() {
 void Window::closeEvent(QCloseEvent *event) {
     closeApp();
     event->accept();
+}
+
+//MenuBar
+//This is a custom menubar class. The only reason for its existence is to
+//suppress the default Qt context menu that it has
+void MenuBar::contextMenuEvent(QContextMenuEvent *) {
 }
