@@ -115,30 +115,33 @@ void Actions::deleteFile() {
     QMessageBox msg;
     msg.setWindowTitle("Warning!");
     msg.setIcon(QMessageBox::Warning);
-    msg.setText("This will permanently delete this file or folder.\n"
+    msg.setText("This will permanently delete these file(s) or folder(s).\n"
                 "If it is a folder, all its contents will be deleted also.\n"
                 "This CANNOT be undone!\n\n"
                 "Do you wish to continue?");
     msg.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
     int ret = msg.exec();
     if (ret==QMessageBox::Yes) {
-        QString toDelete = TabWidget::currentWidget()->fsCurrentPath();
-        toDelete+=TabWidget::currentWidget()->currentItemName();
-        bool ret;
-        if (QFileInfo(toDelete).isDir()) {
-            ret = QDir(toDelete).removeRecursively();
-        } else {
-            ret = QFile(toDelete).remove();
-        }
-        if (ret==false) {
-            QMessageBox msg;
-            msg.setWindowTitle("Error");
-            msg.setIcon(QMessageBox::Critical);
-            msg.setText("There was an error deleting this file or folder!");
-            msg.setDetailedText("This could mean that the file is read-only, "
-                                "or that you do not have the proper permissions "
-                                "to access it.");
-            msg.exec();
+        auto list = TabWidget::currentWidget()->currentItemNames();
+        QString path = TabWidget::currentWidget()->fsCurrentPath();
+        for (int i = 0; i<list.size(); i++) {
+            QString toDelete = path+list.at(i);
+            bool ret;
+            if (QFileInfo(toDelete).isDir()) {
+                ret = QDir(toDelete).removeRecursively();
+            } else {
+                ret = QFile(toDelete).remove();
+            }
+            if (ret==false) {
+                QMessageBox msg;
+                msg.setWindowTitle("Error");
+                msg.setIcon(QMessageBox::Critical);
+                msg.setText("There was an error deleting this file or folder!");
+                msg.setDetailedText("This could mean that the file is read-only, "
+                                    "or that you do not have the proper permissions "
+                                    "to access it.");
+                msg.exec();
+            }
         }
     }
 }
