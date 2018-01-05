@@ -2,6 +2,7 @@
 #include <QVector>
 #include <QIcon>
 #include <QCursor>
+#include <QDesktopServices>
 
 #include "browserwidget.hh"
 #include "tabwidget.hh"
@@ -179,6 +180,8 @@ void BrowserWidget::onItemDoubleClicked(QListWidgetItem *item) {
     path+=item->text();
     if (QFileInfo(path).isDir()) {
         loadDir(path);
+    } else {
+        QDesktopServices::openUrl(QUrl(path));
     }
 }
 

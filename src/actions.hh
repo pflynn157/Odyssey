@@ -4,6 +4,7 @@
 
 class Actions {
 public:
+    static void openCurrentFile();
     static void newFolder();
     static void newFile();
     static void rename();

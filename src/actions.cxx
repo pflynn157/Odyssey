@@ -2,11 +2,17 @@
 #include <QDir>
 #include <QMessageBox>
 #include <QInputDialog>
-#include <iostream>
+#include <QDesktopServices>
 
 #include "actions.hh"
 #include "clipboard.hh"
 #include "tabwidget.hh"
+
+void Actions::openCurrentFile() {
+    QString path = TabWidget::currentWidget()->fsCurrentPath();
+    path+=TabWidget::currentWidget()->currentItemName();
+    QDesktopServices::openUrl(QUrl(path));
+}
 
 void Actions::newFolder() {
     QInputDialog dialog;

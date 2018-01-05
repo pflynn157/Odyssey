@@ -7,16 +7,20 @@
 FileContextMenu::FileContextMenu(BrowserWidget *b) {
     bWidget = b;
 
+    open = new QAction(QIcon::fromTheme("document-open"),"Open",this);
     cut = new QAction(QIcon::fromTheme("edit-cut"),"Cut",this);
     copy = new QAction(QIcon::fromTheme("edit-copy"),"Copy",this);
     rename = new QAction(QIcon::fromTheme("edit-rename"),"Rename",this);
     deleteFile = new QAction(QIcon::fromTheme("edit-delete"),"Delete",this);
 
+    connect(open,&QAction::triggered,this,&FileContextMenu::onOpenClicked);
     connect(cut,&QAction::triggered,this,&FileContextMenu::onCutClicked);
     connect(copy,&QAction::triggered,this,&FileContextMenu::onCopyClicked);
     connect(rename,&QAction::triggered,this,&FileContextMenu::onRenameClicked);
     connect(deleteFile,&QAction::triggered,this,&FileContextMenu::onDeleteClicked);
 
+    this->addAction(open);
+    this->addSeparator();
     this->addAction(cut);
     this->addAction(copy);
     this->addSeparator();
@@ -26,10 +30,15 @@ FileContextMenu::FileContextMenu(BrowserWidget *b) {
 }
 
 FileContextMenu::~FileContextMenu() {
+    delete open;
     delete cut;
     delete copy;
     delete rename;
     delete deleteFile;
+}
+
+void FileContextMenu::onOpenClicked() {
+    Actions::openCurrentFile();
 }
 
 void FileContextMenu::onCutClicked() {
