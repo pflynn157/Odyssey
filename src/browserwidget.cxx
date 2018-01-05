@@ -10,6 +10,7 @@
 #include "menu/folder_contextmenu.hh"
 #include "menu/file_contextmenu.hh"
 #include "menu/background_contextmenu.hh"
+#include "trash.hh"
 
 BrowserWidget::BrowserWidget() {
     defaultGridSize = this->gridSize();
@@ -80,6 +81,11 @@ void BrowserWidget::loadDir(QString path, bool recordHistory, bool firstLoad) {
 
     if (firstLoad==false) {
         TabWidget::updateTabName();
+        if (fsCurrentPath()==Trash::folderPath) {
+            TabWidget::displayTrashBar(true);
+        } else {
+            TabWidget::displayTrashBar(false);
+        }
     }
 }
 
@@ -155,6 +161,7 @@ void BrowserWidget::mousePressEvent(QMouseEvent *event) {
             for (int i = 0; i<selectedItems.size(); i++) {
                 selectedItems.at(i)->setSelected(false);
             }
+            emit selectionState(false);
         }
     } else if (event->button()==Qt::RightButton) {
         QListWidgetItem *item = this->itemAt(event->x(),event->y());
@@ -184,6 +191,7 @@ void BrowserWidget::onItemDoubleClicked(QListWidgetItem *item) {
     path+=item->text();
     if (QFileInfo(path).isDir()) {
         loadDir(path);
+        emit selectionState(false);
     } else {
         QDesktopServices::openUrl(QUrl(path));
     }
@@ -191,6 +199,7 @@ void BrowserWidget::onItemDoubleClicked(QListWidgetItem *item) {
 
 void BrowserWidget::onItemClicked(QListWidgetItem *item) {
     currentItemTxt = item->text();
+    emit selectionState(true);
 }
 
 //FileSystemWatcher class

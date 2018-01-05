@@ -36,7 +36,10 @@ SOURCES += \
     menu/folder_contextmenu.cxx \
     menu/file_contextmenu.cxx \
     menu/background_contextmenu.cxx \
-    actions.cxx
+    actions.cxx \
+    tinyxml2.cpp \
+    trash.cxx \
+    trashbar.cxx
 
 HEADERS += \
         window.hh \
@@ -49,7 +52,10 @@ HEADERS += \
     clipboard.hh \
     menu/file_contextmenu.hh \
     menu/background_contextmenu.hh \
-    actions.hh
+    actions.hh \
+    tinyxml2.h \
+    trash.hh \
+    trashbar.hh
 
 RESOURCES += \
     rsc.qrc

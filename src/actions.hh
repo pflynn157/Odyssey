@@ -8,6 +8,8 @@ public:
     static void newFolder();
     static void newFile();
     static void rename();
+    static void trash();
+    static void restore();
     static void deleteFile();
     static void deleteFolder();
     static void paste();

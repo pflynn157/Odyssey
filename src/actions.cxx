@@ -7,6 +7,7 @@
 #include "actions.hh"
 #include "clipboard.hh"
 #include "tabwidget.hh"
+#include "trash.hh"
 
 void Actions::openCurrentFile() {
     QString path = TabWidget::currentWidget()->fsCurrentPath();
@@ -91,6 +92,17 @@ void Actions::rename() {
             }
         }
     }
+}
+
+void Actions::trash() {
+    QString toTrash = TabWidget::currentWidget()->fsCurrentPath();
+    toTrash+=TabWidget::currentWidget()->currentItemName();
+    Trash::trashFile(toTrash);
+}
+
+void Actions::restore() {
+    QString name = TabWidget::currentWidget()->currentItemName();
+    Trash::restoreFile(name);
 }
 
 void Actions::deleteFile() {

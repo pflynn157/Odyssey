@@ -12,11 +12,13 @@ public:
     ~FolderContextMenu();
 private:
     BrowserWidget *bWidget;
-    QAction *openTab, *cut, *copy, *rename, *deleteFolder;
+    QAction *openTab, *cut, *copy, *rename, *trash, *restore, *deleteFolder;
 private slots:
     void onOpenTabClicked();
     void onCutClicked();
     void onCopyClicked();
     void onRenameClicked();
+    void onTrashFolderClicked();
+    void onRestoreFolderClicked();
     void onDeleteFolderClicked();
 };

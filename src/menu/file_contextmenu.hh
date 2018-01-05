@@ -12,11 +12,13 @@ public:
     ~FileContextMenu();
 private:
     BrowserWidget *bWidget;
-    QAction *open, *cut, *copy, *rename, *deleteFile;
+    QAction *open, *cut, *copy, *rename, *trash, *restore, *deleteFile;
 private slots:
     void onOpenClicked();
     void onCutClicked();
     void onCopyClicked();
     void onRenameClicked();
+    void onTrashClicked();
+    void onRestoreClicked();
     void onDeleteClicked();
 };

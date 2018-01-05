@@ -3,6 +3,7 @@
 
 #include "window.hh"
 #include "clipboard.hh"
+#include "trash.hh"
 
 using namespace CppLib;
 
@@ -14,6 +15,8 @@ int main(int argc, char *argv[]) {
     Settings::initPaths();
 
     QApplication a(argc, argv);
+
+    Trash::initPaths();
 
     Window w;
     w.show();

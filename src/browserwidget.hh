@@ -41,6 +41,7 @@ private slots:
 signals:
     void dirChanged(QString path);
     void historyChanged();
+    void selectionState(bool anySelected);
 };
 
 class FileSystemWatcher : public QTimer {
