@@ -12,31 +12,38 @@
 #include "menu/background_contextmenu.hh"
 #include "trash.hh"
 
-BrowserWidget::BrowserWidget() {
-    defaultGridSize = this->gridSize();
+BrowserWidget::BrowserWidget()
+    : layout(new QVBoxLayout),
+      listWidget(new ListWidget(this))
+{
+    layout->setContentsMargins(0,0,0,0);
+    this->setLayout(layout);
+    layout->addWidget(listWidget);
+
+    defaultGridSize = listWidget->gridSize();
     setIconView();
-    connect(this,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(onItemDoubleClicked(QListWidgetItem*)));
-    connect(this,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(onItemClicked(QListWidgetItem*)));
+    connect(listWidget,SIGNAL(itemDoubleClicked(QListWidgetItem*)),this,SLOT(onItemDoubleClicked(QListWidgetItem*)));
+    connect(listWidget,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(onItemClicked(QListWidgetItem*)));
 }
 
 void BrowserWidget::setIconView() {
-    this->setViewMode(QListWidget::IconMode);
-    this->setFlow(QListWidget::LeftToRight);
-    this->setWrapping(true);
-    this->setMovement(QListWidget::Snap);
-    this->setResizeMode(QListWidget::Adjust);
-    this->setGridSize(QSize(80,80));
-    this->setWordWrap(true);
+    listWidget->setViewMode(QListWidget::IconMode);
+    listWidget->setFlow(QListWidget::LeftToRight);
+    listWidget->setWrapping(true);
+    listWidget->setMovement(QListWidget::Snap);
+    listWidget->setResizeMode(QListWidget::Adjust);
+    listWidget->setGridSize(QSize(80,80));
+    listWidget->setWordWrap(true);
 }
 
 void BrowserWidget::setListView() {
-    this->setViewMode(QListWidget::ListMode);
-    this->setFlow(QListWidget::TopToBottom);
-    this->setWrapping(true);
-    this->setMovement(QListWidget::Snap);
-    this->setResizeMode(QListWidget::Adjust);
-    this->setGridSize(defaultGridSize);
-    this->setWordWrap(true);
+    listWidget->setViewMode(QListWidget::ListMode);
+    listWidget->setFlow(QListWidget::TopToBottom);
+    listWidget->setWrapping(true);
+    listWidget->setMovement(QListWidget::Snap);
+    listWidget->setResizeMode(QListWidget::Adjust);
+    listWidget->setGridSize(defaultGridSize);
+    listWidget->setWordWrap(true);
 }
 
 void BrowserWidget::loadDir(QString path, bool recordHistory, bool firstLoad) {
@@ -48,7 +55,7 @@ void BrowserWidget::loadDir(QString path, bool recordHistory, bool firstLoad) {
         }
     }
     currentPath = path;
-    this->clear();
+    listWidget->clear();
     QDir dir(path);
 
     QStringList folders = dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot, QDir::Name | QDir::IgnoreCase);
@@ -72,11 +79,11 @@ void BrowserWidget::loadDir(QString path, bool recordHistory, bool firstLoad) {
     }
 
     for (int i = 0; i<folderItems.size(); i++) {
-        this->addItem(folderItems.at(i));
+        listWidget->addItem(folderItems.at(i));
     }
 
     for (int i = 0; i<fileItems.size(); i++) {
-        this->addItem(fileItems.at(i));
+        listWidget->addItem(fileItems.at(i));
     }
 
     if (firstLoad==false) {
@@ -106,15 +113,15 @@ QStringList BrowserWidget::history() {
 }
 
 void BrowserWidget::reload() {
-    QList<QListWidgetItem *> items = this->selectedItems();
+    QList<QListWidgetItem *> items = listWidget->selectedItems();
     QStringList oldNames;
     for (int i = 0; i<items.size(); i++) {
         oldNames.push_back(items.at(i)->text());
     }
     loadDir(currentPath,false);
 
-    for (int i = 0; i<this->count(); i++) {
-        QListWidgetItem *item = this->item(i);
+    for (int i = 0; i<listWidget->count(); i++) {
+        QListWidgetItem *item = listWidget->item(i);
         for (int j = 0; j<oldNames.size(); j++) {
             if (item->text()==oldNames.at(j)) {
                 item->setSelected(true);
@@ -153,36 +160,6 @@ QString BrowserWidget::currentItemName() {
     return currentItemTxt;
 }
 
-void BrowserWidget::mousePressEvent(QMouseEvent *event) {
-    if (event->button()==Qt::LeftButton) {
-        QListWidgetItem *item = this->itemAt(event->x(),event->y());
-        if (item==nullptr) {
-            QList<QListWidgetItem *> selectedItems = this->selectedItems();
-            for (int i = 0; i<selectedItems.size(); i++) {
-                selectedItems.at(i)->setSelected(false);
-            }
-            emit selectionState(false);
-        }
-    } else if (event->button()==Qt::RightButton) {
-        QListWidgetItem *item = this->itemAt(event->x(),event->y());
-        if (item!=nullptr) {
-            currentItemTxt = item->text();
-            QString complete = fsCurrentPath()+currentItemTxt;
-            if (QFileInfo(complete).isDir()) {
-                FolderContextMenu menu(this);
-                menu.exec(QCursor::pos());
-            } else {
-                FileContextMenu menu(this);
-                menu.exec(QCursor::pos());
-            }
-        } else {
-            BackgroundContextMenu menu(this);
-            menu.exec(QCursor::pos());
-        }
-    }
-    QListWidget::mousePressEvent(event);
-}
-
 void BrowserWidget::onItemDoubleClicked(QListWidgetItem *item) {
     QString path = currentPath;
     if (!path.endsWith("/")) {
@@ -200,6 +177,42 @@ void BrowserWidget::onItemDoubleClicked(QListWidgetItem *item) {
 void BrowserWidget::onItemClicked(QListWidgetItem *item) {
     currentItemTxt = item->text();
     emit selectionState(true);
+}
+
+//ListWidget clss
+//We had to create separate list widget so we could inherit the mouse press event
+ListWidget::ListWidget(BrowserWidget *b) {
+    bWidget = b;
+}
+
+void ListWidget::mousePressEvent(QMouseEvent *event) {
+    if (event->button()==Qt::LeftButton) {
+        QListWidgetItem *item = this->itemAt(event->x(),event->y());
+        if (item==nullptr) {
+            QList<QListWidgetItem *> selectedItems = this->selectedItems();
+            for (int i = 0; i<selectedItems.size(); i++) {
+                selectedItems.at(i)->setSelected(false);
+            }
+            emit bWidget->selectionState(false);
+        }
+    } else if (event->button()==Qt::RightButton) {
+        QListWidgetItem *item = this->itemAt(event->x(),event->y());
+        if (item!=nullptr) {
+            bWidget->currentItemTxt = item->text();
+            QString complete = bWidget->fsCurrentPath()+bWidget->currentItemTxt;
+            if (QFileInfo(complete).isDir()) {
+                FolderContextMenu menu(bWidget);
+                menu.exec(QCursor::pos());
+            } else {
+                FileContextMenu menu(bWidget);
+                menu.exec(QCursor::pos());
+            }
+        } else {
+            BackgroundContextMenu menu(bWidget);
+            menu.exec(QCursor::pos());
+        }
+    }
+    QListWidget::mousePressEvent(event);
 }
 
 //FileSystemWatcher class
