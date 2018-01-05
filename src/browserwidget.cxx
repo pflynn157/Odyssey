@@ -3,6 +3,7 @@
 #include <QIcon>
 #include <QCursor>
 #include <QDesktopServices>
+#include <QMimeDatabase>
 
 #include "browserwidget.hh"
 #include "tabwidget.hh"
@@ -62,7 +63,10 @@ void BrowserWidget::loadDir(QString path, bool recordHistory, bool firstLoad) {
 
     for (int i = 0; i<files.size(); i++) {
         QListWidgetItem *item = new QListWidgetItem(files.at(i));
-        item->setIcon(QIcon::fromTheme("text-plain"));
+        QIcon defaultIcon = QIcon::fromTheme("text-plain");
+        QMimeDatabase db;
+        QIcon icon = QIcon::fromTheme(db.mimeTypeForFile(fsCurrentPath()+files.at(i)).iconName(),defaultIcon);
+        item->setIcon(icon);
         fileItems.push_back(item);
     }
 
