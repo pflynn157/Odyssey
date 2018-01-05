@@ -34,6 +34,7 @@ public:
     void startRefresh();
     void stopRefresh();
     QString currentItemName();
+    QStringList currentItemNames();
 private:
     QVBoxLayout *layout;
     QListWidget *listWidget;

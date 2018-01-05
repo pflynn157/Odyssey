@@ -60,17 +60,15 @@ void FolderContextMenu::onOpenTabClicked() {
 }
 
 void FolderContextMenu::onCutClicked() {
-    clipboard.fileName = bWidget->currentItemName();
+    clipboard.fileName = bWidget->currentItemNames();
     clipboard.oldPath = bWidget->fsCurrentPath();
     clipboard.action = Clipboard_Actions::CUT;
-    clipboard.filetype = Clipboard_FileType::TYPE_FOLDER;
 }
 
 void FolderContextMenu::onCopyClicked() {
-    clipboard.fileName = bWidget->currentItemName();
+    clipboard.fileName = bWidget->currentItemNames();
     clipboard.oldPath = bWidget->fsCurrentPath();
     clipboard.action = Clipboard_Actions::COPY;
-    clipboard.filetype = Clipboard_FileType::TYPE_FOLDER;
 }
 
 void FolderContextMenu::onRenameClicked() {

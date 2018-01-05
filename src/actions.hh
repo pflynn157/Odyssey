@@ -14,6 +14,6 @@ public:
     static void deleteFolder();
     static void paste();
 private:
-    static QString handleDuplicate(QString newAddr);
+    static QString handleDuplicate(QString newAddr, int index);
     static bool copyDirectory(QString oldPath, QString newPath);
 };

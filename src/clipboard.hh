@@ -1,6 +1,7 @@
 #pragma once
 
 #include <QString>
+#include <QStringList>
 
 enum Clipboard_Actions {
     CUT,
@@ -8,17 +9,11 @@ enum Clipboard_Actions {
     NONE
 };
 
-enum Clipboard_FileType {
-    TYPE_FILE,
-    TYPE_FOLDER
-};
-
 struct Clipboard {
-    QString fileName;
+    QStringList fileName;
     QString oldPath;
     QString newPath;
     Clipboard_Actions action;
-    Clipboard_FileType filetype;
 };
 
 extern Clipboard clipboard;

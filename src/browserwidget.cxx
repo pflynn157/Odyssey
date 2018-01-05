@@ -167,6 +167,15 @@ QString BrowserWidget::currentItemName() {
     return currentItemTxt;
 }
 
+QStringList BrowserWidget::currentItemNames() {
+    QStringList list;
+    auto selected = listWidget->selectedItems();
+    for (int i = 0; i<selected.size(); i++) {
+        list.push_back(selected.at(i)->text());
+    }
+    return list;
+}
+
 void BrowserWidget::onItemDoubleClicked(QListWidgetItem *item) {
     QString path = currentPath;
     if (!path.endsWith("/")) {
@@ -189,6 +198,9 @@ void BrowserWidget::onItemClicked(QListWidgetItem *item) {
 //ListWidget clss
 //We had to create separate list widget so we could inherit the mouse press event
 ListWidget::ListWidget(BrowserWidget *b) {
+    this->setDragEnabled(false);
+    this->setSelectionMode(QListWidget::ExtendedSelection);
+
     bWidget = b;
 }
 

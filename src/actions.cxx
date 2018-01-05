@@ -3,6 +3,7 @@
 #include <QMessageBox>
 #include <QInputDialog>
 #include <QDesktopServices>
+#include <QFileInfo>
 
 #include "actions.hh"
 #include "clipboard.hh"
@@ -155,67 +156,69 @@ void Actions::paste() {
         clipboard.newPath+="/";
     }
 
-    QString oldAddr = clipboard.oldPath;
-    QString newAddr = clipboard.newPath;
+    for (int i = 0; i<clipboard.fileName.size(); i++ ){
+        QString oldAddr = clipboard.oldPath;
+        QString newAddr = clipboard.newPath;
 
-    oldAddr += clipboard.fileName;
-    newAddr += clipboard.fileName;
+        oldAddr += clipboard.fileName.at(i);
+        newAddr += clipboard.fileName.at(i);
 
-    if (clipboard.action==Clipboard_Actions::CUT) {
-        bool ret = QFile(oldAddr).rename(newAddr);
-        if (ret==false) {
-            if (QFileInfo(newAddr).exists()) {
-                newAddr = handleDuplicate(newAddr);
-                ret = QFile(oldAddr).rename(newAddr);
-                if (ret==false) {
-                    QMessageBox msg;
-                    msg.setWindowTitle("Fatal Error");
-                    msg.setText("An unknown critical error has occurred.");
-                    msg.setIcon(QMessageBox::Critical);
-                    msg.exec();
-                }
-            } else {
-                QMessageBox msg;
-                msg.setWindowTitle("Error");
-                msg.setIcon(QMessageBox::Critical);
-                msg.setText("There was an error moving this file!");
-                msg.setDetailedText("This could mean that the file is read-only, "
-                                    "or that you do not have the proper permissions "
-                                    "to access it.");
-                msg.exec();
-            }
-        }
-    } else {
-        bool ret;
-        if (clipboard.filetype==Clipboard_FileType::TYPE_FILE) {
-            ret = QFile(oldAddr).copy(newAddr);
-        } else {
-            ret = copyDirectory(oldAddr,newAddr);
-        }
-        if (ret==false) {
-            if (QFileInfo(newAddr).exists()) {
-                newAddr = handleDuplicate(newAddr);
-                if (clipboard.filetype==Clipboard_FileType::TYPE_FILE) {
-                    ret = QFile(oldAddr).copy(newAddr);
+        if (clipboard.action==Clipboard_Actions::CUT) {
+            bool ret = QFile(oldAddr).rename(newAddr);
+            if (ret==false) {
+                if (QFileInfo(newAddr).exists()) {
+                    newAddr = handleDuplicate(newAddr,i);
+                    ret = QFile(oldAddr).rename(newAddr);
+                    if (ret==false) {
+                        QMessageBox msg;
+                        msg.setWindowTitle("Fatal Error");
+                        msg.setText("An unknown critical error has occurred.");
+                        msg.setIcon(QMessageBox::Critical);
+                        msg.exec();
+                    }
                 } else {
-                    ret = copyDirectory(oldAddr,newAddr);
-                }
-                if (ret==false) {
                     QMessageBox msg;
-                    msg.setWindowTitle("Fatal Error");
-                    msg.setText("An unknown critical error has occurred.");
+                    msg.setWindowTitle("Error");
                     msg.setIcon(QMessageBox::Critical);
+                    msg.setText("There was an error moving this file!");
+                    msg.setDetailedText("This could mean that the file is read-only, "
+                                        "or that you do not have the proper permissions "
+                                        "to access it.");
                     msg.exec();
                 }
+            }
+        } else {
+            bool ret;
+            if (QFileInfo(oldAddr).isFile()) {
+                ret = QFile(oldAddr).copy(newAddr);
             } else {
-                QMessageBox msg;
-                msg.setWindowTitle("Error");
-                msg.setIcon(QMessageBox::Critical);
-                msg.setText("There was an error moving this file!");
-                msg.setDetailedText("This could mean that the file is read-only, "
-                                    "or that you do not have the proper permissions "
-                                    "to access it.");
-                msg.exec();
+                ret = copyDirectory(oldAddr,newAddr);
+            }
+            if (ret==false) {
+                if (QFileInfo(newAddr).exists()) {
+                    newAddr = handleDuplicate(newAddr,i);
+                    if (QFileInfo(oldAddr).isFile()) {
+                        ret = QFile(oldAddr).copy(newAddr);
+                    } else {
+                        ret = copyDirectory(oldAddr,newAddr);
+                    }
+                    if (ret==false) {
+                        QMessageBox msg;
+                        msg.setWindowTitle("Fatal Error");
+                        msg.setText("An unknown critical error has occurred.");
+                        msg.setIcon(QMessageBox::Critical);
+                        msg.exec();
+                    }
+                } else {
+                    QMessageBox msg;
+                    msg.setWindowTitle("Error");
+                    msg.setIcon(QMessageBox::Critical);
+                    msg.setText("There was an error moving this file!");
+                    msg.setDetailedText("This could mean that the file is read-only, "
+                                        "or that you do not have the proper permissions "
+                                        "to access it.");
+                    msg.exec();
+                }
             }
         }
     }
@@ -225,7 +228,7 @@ void Actions::paste() {
     }
 }
 
-QString Actions::handleDuplicate(QString newAddr) {
+QString Actions::handleDuplicate(QString newAddr, int index) {
     QMessageBox msg;
     msg.setWindowTitle("Warning");
     msg.setText("A file with the same name already exists. "
@@ -240,7 +243,7 @@ QString Actions::handleDuplicate(QString newAddr) {
             QFile(newAddr).remove();
         }
     } else {
-        newAddr = clipboard.newPath+"(copy) "+clipboard.fileName;
+        newAddr = clipboard.newPath+"(copy) "+clipboard.fileName.at(index);
     }
     return newAddr;
 }
