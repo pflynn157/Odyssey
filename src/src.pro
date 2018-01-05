@@ -40,7 +40,8 @@ SOURCES += \
     tinyxml2.cpp \
     trash.cxx \
     trashbar.cxx \
-    menu/multi_contextmenu.cxx
+    menu/multi_contextmenu.cxx \
+    searchbar.cxx
 
 HEADERS += \
         window.hh \
@@ -57,7 +58,8 @@ HEADERS += \
     tinyxml2.h \
     trash.hh \
     trashbar.hh \
-    menu/multi_contextmenu.hh
+    menu/multi_contextmenu.hh \
+    searchbar.hh
 
 RESOURCES += \
     rsc.qrc

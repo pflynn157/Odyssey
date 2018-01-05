@@ -50,7 +50,11 @@ BrowserWidget::BrowserWidget()
     trashbar->setBrowserWidget(this);
     trashbar->hide();
 
+    searchbar = new SearchBar(this);
+    searchbar->hide();
+
     layout->addWidget(trashbar,0,Qt::AlignTop);
+    layout->addWidget(searchbar,0,Qt::AlignTop);
     layout->addWidget(listWidget);
 
     defaultGridSize = listWidget->gridSize();
@@ -91,8 +95,8 @@ void BrowserWidget::loadDir(QString path, bool recordHistory, bool firstLoad) {
     listWidget->clear();
     QDir dir(path);
 
-    QStringList folders = dir.entryList(QDir::AllDirs | QDir::NoDotAndDotDot, QDir::Name | QDir::IgnoreCase);
-    QStringList files = dir.entryList(QDir::Files | QDir::NoDotAndDotDot, QDir::Name | QDir::IgnoreCase);
+    QStringList folders = dir.entryList(searchPatterns,QDir::AllDirs | QDir::NoDotAndDotDot, QDir::Name | QDir::IgnoreCase);
+    QStringList files = dir.entryList(searchPatterns,QDir::Files | QDir::NoDotAndDotDot, QDir::Name | QDir::IgnoreCase);
 
     QVector<QListWidgetItem *> folderItems, fileItems;
 
@@ -264,6 +268,19 @@ void ListWidget::mousePressEvent(QMouseEvent *event) {
         }
     }
     QListWidget::mousePressEvent(event);
+}
+
+void ListWidget::keyPressEvent(QKeyEvent *event) {
+    if (event->modifiers()==Qt::ControlModifier) {
+        if (event->key()==Qt::Key_S) {
+            if (bWidget->searchbar->isVisible()) {
+                bWidget->searchbar->hide();
+            } else {
+                bWidget->searchbar->show();
+            }
+        }
+    }
+    QListWidget::keyPressEvent(event);
 }
 
 //FileSystemWatcher class

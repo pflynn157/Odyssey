@@ -34,17 +34,21 @@
 #include <QStringList>
 #include <QListWidgetItem>
 #include <QMouseEvent>
+#include <QKeyEvent>
 #include <QTimer>
 
 #include "trashbar.hh"
+#include "searchbar.hh"
 
 class TrashBar;
+class SearchBar;
 class ListWidget;
 class FileSystemWatcher;
 
 class BrowserWidget : public QWidget {
     Q_OBJECT
     friend class ListWidget;
+    friend class SearchBar;
 public:
     BrowserWidget();
     void setIconView();
@@ -70,6 +74,8 @@ private:
     FileSystemWatcher *thread;
     QString currentItemTxt;
     TrashBar *trashbar;
+    SearchBar *searchbar;
+    QStringList searchPatterns;
 private slots:
     void onItemDoubleClicked(QListWidgetItem *item);
     void onItemClicked(QListWidgetItem *item);
@@ -85,6 +91,7 @@ public:
     explicit ListWidget(BrowserWidget *b);
 protected:
     void mousePressEvent(QMouseEvent *event);
+    void keyPressEvent(QKeyEvent *event);
 private:
     BrowserWidget *bWidget;
 };
