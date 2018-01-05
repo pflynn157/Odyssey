@@ -51,6 +51,7 @@ class BrowserWidget : public QWidget {
     friend class SearchBar;
 public:
     BrowserWidget();
+    ~BrowserWidget();
     void setIconView();
     void setListView();
     void loadDir(QString path, bool recordHistory, bool firstLoad);

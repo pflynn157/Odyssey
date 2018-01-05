@@ -63,6 +63,14 @@ BrowserWidget::BrowserWidget()
     connect(listWidget,SIGNAL(itemClicked(QListWidgetItem*)),this,SLOT(onItemClicked(QListWidgetItem*)));
 }
 
+BrowserWidget::~BrowserWidget() {
+    delete layout;
+    delete listWidget;
+    delete trashbar;
+    delete searchbar;
+    delete thread;
+}
+
 void BrowserWidget::setIconView() {
     listWidget->setViewMode(QListWidget::IconMode);
     listWidget->setFlow(QListWidget::LeftToRight);
