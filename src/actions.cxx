@@ -257,6 +257,8 @@ void Actions::paste() {
         }
     }
 
+    TabWidget::currentWidget()->reload();
+
     if (clipboard.action==Clipboard_Actions::CUT) {
         clipboard.action = Clipboard_Actions::NONE;
     }
