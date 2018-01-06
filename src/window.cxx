@@ -62,10 +62,12 @@ Window::Window(QWidget *parent)
     filemenu = new FileMenu(this);
     editmenu = new EditMenu;
     viewmenu = new ViewMenu;
+    helpmenu = new HelpMenu;
 
     menubar->addMenu(filemenu);
     menubar->addMenu(editmenu);
     menubar->addMenu(viewmenu);
+    menubar->addMenu(helpmenu);
 
     navbar = new NavBar;
     this->addToolBar(navbar);
@@ -82,6 +84,7 @@ Window::~Window() {
     delete filemenu;
     delete editmenu;
     delete viewmenu;
+    delete helpmenu;
     delete navbar;
     delete addrTxt;
     delete tabPane;

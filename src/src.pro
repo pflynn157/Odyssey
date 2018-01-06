@@ -44,7 +44,8 @@ SOURCES += \
     searchbar.cxx \
     menubar/filemenu.cxx \
     menubar/editmenu.cxx \
-    menubar/viewmenu.cxx
+    menubar/viewmenu.cxx \
+    menubar/helpmenu.cxx
 
 HEADERS += \
         window.hh \
@@ -65,7 +66,8 @@ HEADERS += \
     searchbar.hh \
     menubar/filemenu.hh \
     menubar/editmenu.hh \
-    menubar/viewmenu.hh
+    menubar/viewmenu.hh \
+    menubar/helpmenu.hh
 
 RESOURCES += \
     rsc.qrc

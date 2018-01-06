@@ -26,46 +26,17 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 
-#include <QMainWindow>
-#include <QCloseEvent>
-#include <QKeyEvent>
-#include <QMenuBar>
-#include <QContextMenuEvent>
+#include <QMenu>
+#include <QAction>
 
-#include "navbar.hh"
-#include "addressbar_text.hh"
-#include "tabwidget.hh"
-
-#include "menubar/filemenu.hh"
-#include "menubar/editmenu.hh"
-#include "menubar/viewmenu.hh"
-#include "menubar/helpmenu.hh"
-
-class FileMenu;
-class MenuBar;
-
-class Window : public QMainWindow {
+class HelpMenu : public QMenu {
     Q_OBJECT
 public:
-    Window(QWidget *parent = 0);
-    ~Window();
-    void closeApp();
-protected:
-    void closeEvent(QCloseEvent *event);
-    void keyPressEvent(QKeyEvent *event);
+    HelpMenu();
+    ~HelpMenu();
 private:
-    NavBar *navbar;
-    MenuBar *menubar;
-    FileMenu *filemenu;
-    EditMenu *editmenu;
-    ViewMenu *viewmenu;
-    HelpMenu *helpmenu;
-    AddressBarText *addrTxt;
-    TabWidget *tabPane;
-};
-
-class MenuBar : public QMenuBar {
-    Q_OBJECT
-protected:
-    void contextMenuEvent(QContextMenuEvent *);
+    QAction *keyboardShortcuts, *aboutQt, *about;
+private slots:
+    void onKeyboardShortcutsClicked();
+    void onAboutClicked();
 };

@@ -24,48 +24,38 @@
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#pragma once
+#include <QIcon>
+#include <QApplication>
 
-#include <QMainWindow>
-#include <QCloseEvent>
-#include <QKeyEvent>
-#include <QMenuBar>
-#include <QContextMenuEvent>
+#include "helpmenu.hh"
 
-#include "navbar.hh"
-#include "addressbar_text.hh"
-#include "tabwidget.hh"
+HelpMenu::HelpMenu() {
+    this->setTitle("Help");
 
-#include "menubar/filemenu.hh"
-#include "menubar/editmenu.hh"
-#include "menubar/viewmenu.hh"
-#include "menubar/helpmenu.hh"
+    keyboardShortcuts = new QAction("Keyboard Shortcuts",this);
+    aboutQt = new QAction("About Qt",this);
+    about = new QAction(QIcon::fromTheme("help-about"),"About",this);
 
-class FileMenu;
-class MenuBar;
+    connect(keyboardShortcuts,&QAction::triggered,this,&HelpMenu::onKeyboardShortcutsClicked);
+    connect(aboutQt,&QAction::triggered,qApp,&QApplication::aboutQt);
+    connect(about,&QAction::triggered,this,&HelpMenu::onAboutClicked);
 
-class Window : public QMainWindow {
-    Q_OBJECT
-public:
-    Window(QWidget *parent = 0);
-    ~Window();
-    void closeApp();
-protected:
-    void closeEvent(QCloseEvent *event);
-    void keyPressEvent(QKeyEvent *event);
-private:
-    NavBar *navbar;
-    MenuBar *menubar;
-    FileMenu *filemenu;
-    EditMenu *editmenu;
-    ViewMenu *viewmenu;
-    HelpMenu *helpmenu;
-    AddressBarText *addrTxt;
-    TabWidget *tabPane;
-};
+    this->addAction(keyboardShortcuts);
+    this->addSeparator();
+    this->addAction(aboutQt);
+    this->addAction(about);
+}
 
-class MenuBar : public QMenuBar {
-    Q_OBJECT
-protected:
-    void contextMenuEvent(QContextMenuEvent *);
-};
+HelpMenu::~HelpMenu() {
+    delete keyboardShortcuts;
+    delete aboutQt;
+    delete about;
+}
+
+void HelpMenu::onKeyboardShortcutsClicked() {
+
+}
+
+void HelpMenu::onAboutClicked() {
+
+}
