@@ -45,7 +45,8 @@ SOURCES += \
     menubar/filemenu.cxx \
     menubar/editmenu.cxx \
     menubar/viewmenu.cxx \
-    menubar/helpmenu.cxx
+    menubar/helpmenu.cxx \
+    dialogs/helpdialog.cxx
 
 HEADERS += \
         window.hh \
@@ -67,7 +68,11 @@ HEADERS += \
     menubar/filemenu.hh \
     menubar/editmenu.hh \
     menubar/viewmenu.hh \
-    menubar/helpmenu.hh
+    menubar/helpmenu.hh \
+    dialogs/helpdialog.hh
 
 RESOURCES += \
     rsc.qrc
+
+FORMS += \
+    dialogs/helpdialog.ui

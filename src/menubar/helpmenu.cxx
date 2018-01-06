@@ -28,6 +28,7 @@
 #include <QApplication>
 
 #include "helpmenu.hh"
+#include "../dialogs/helpdialog.hh"
 
 HelpMenu::HelpMenu() {
     this->setTitle("Help");
@@ -57,5 +58,5 @@ void HelpMenu::onKeyboardShortcutsClicked() {
 }
 
 void HelpMenu::onAboutClicked() {
-
+    HelpDialog().exec();
 }
