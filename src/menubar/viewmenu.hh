@@ -26,32 +26,17 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QTabWidget>
-#include <QVector>
+#include <QMenu>
+#include <QAction>
 
-#include "browserwidget.hh"
-#include "navbar.hh"
-#include "addressbar_text.hh"
-
-class TabWidget : public QWidget {
+class ViewMenu : public QMenu {
     Q_OBJECT
 public:
-    explicit TabWidget(NavBar *navbar, AddressBarText *addrTextBar);
-    ~TabWidget();
-    static QTabWidget *tabs;
-    static void addNewTab(QString path);
-    static void addNewTab();
-    static void closeCurrentTab();
-    static BrowserWidget *currentWidget();
-    static void updateTabName();
-    static QVector<BrowserWidget *> allWidgets();
+    ViewMenu();
+    ~ViewMenu();
 private:
-    static NavBar *navigationBar;
-    static AddressBarText *addrText;
-    QVBoxLayout *layout;
+    QAction *reload, *hidden;
 private slots:
-    void onTabsChanged();
-    void onTabClosed(int index);
+    void onReloadClicked();
+    void onHiddenClicked();
 };

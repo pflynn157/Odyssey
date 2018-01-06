@@ -30,6 +30,12 @@
 #include <QCursor>
 #include <QDesktopServices>
 #include <QMimeDatabase>
+#ifdef _WIN32
+    //Windows: use the registry
+#else
+#include <cpplib/settings.hh>
+#endif
+#include <iostream>
 
 #include "browserwidget.hh"
 #include "tabwidget.hh"
@@ -38,6 +44,10 @@
 #include "menu/background_contextmenu.hh"
 #include "menu/multi_contextmenu.hh"
 #include "trash.hh"
+
+#ifndef _WIN32
+using namespace CppLib;
+#endif
 
 BrowserWidget::BrowserWidget()
     : layout(new QVBoxLayout),
@@ -103,8 +113,21 @@ void BrowserWidget::loadDir(QString path, bool recordHistory, bool firstLoad) {
     listWidget->clear();
     QDir dir(path);
 
-    QStringList folders = dir.entryList(searchPatterns,QDir::AllDirs | QDir::NoDotAndDotDot, QDir::Name | QDir::IgnoreCase);
-    QStringList files = dir.entryList(searchPatterns,QDir::Files | QDir::NoDotAndDotDot, QDir::Name | QDir::IgnoreCase);
+    QStringList folders, files;
+
+#ifdef _WIN32
+    //Windows: use the registry
+    bool hidden = false;
+#else
+    bool hidden = QVariant(Settings::getSetting("view/hidden","false")).toBool();
+#endif
+    if (hidden) {
+        folders = dir.entryList(searchPatterns,QDir::AllDirs | QDir::NoDotAndDotDot | QDir::Hidden, QDir::Name | QDir::IgnoreCase);
+        files = dir.entryList(searchPatterns,QDir::Files | QDir::NoDotAndDotDot | QDir::Hidden, QDir::Name | QDir::IgnoreCase);
+    } else {
+        folders = dir.entryList(searchPatterns,QDir::AllDirs | QDir::NoDotAndDotDot, QDir::Name | QDir::IgnoreCase);
+        files = dir.entryList(searchPatterns,QDir::Files | QDir::NoDotAndDotDot, QDir::Name | QDir::IgnoreCase);
+    }
 
     QVector<QListWidgetItem *> folderItems, fileItems;
 

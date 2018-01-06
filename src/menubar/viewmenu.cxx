@@ -24,34 +24,54 @@
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#pragma once
+#include <QIcon>
+#include <QKeySequence>
+#ifdef _WIN32
+    //Windows: Use the registry
+#else
+#include <cpplib/settings.hh>
+#endif
 
-#include <QWidget>
-#include <QVBoxLayout>
-#include <QTabWidget>
-#include <QVector>
+#include "viewmenu.hh"
+#include "tabwidget.hh"
 
-#include "browserwidget.hh"
-#include "navbar.hh"
-#include "addressbar_text.hh"
+#ifndef _WIN32
+using namespace CppLib;
+#endif
 
-class TabWidget : public QWidget {
-    Q_OBJECT
-public:
-    explicit TabWidget(NavBar *navbar, AddressBarText *addrTextBar);
-    ~TabWidget();
-    static QTabWidget *tabs;
-    static void addNewTab(QString path);
-    static void addNewTab();
-    static void closeCurrentTab();
-    static BrowserWidget *currentWidget();
-    static void updateTabName();
-    static QVector<BrowserWidget *> allWidgets();
-private:
-    static NavBar *navigationBar;
-    static AddressBarText *addrText;
-    QVBoxLayout *layout;
-private slots:
-    void onTabsChanged();
-    void onTabClosed(int index);
-};
+ViewMenu::ViewMenu() {
+    this->setTitle("View");
+
+    reload = new QAction(QIcon::fromTheme("view-refresh"),"Reload",this);
+    hidden = new QAction("View Hidden Files",this);
+
+    hidden->setCheckable(true);
+    hidden->setChecked(QVariant(Settings::getSetting("view/hidden","false")).toBool());
+
+    reload->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_R));
+    hidden->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_H));
+
+    connect(reload,&QAction::triggered,this,&ViewMenu::onReloadClicked);
+    connect(hidden,&QAction::triggered,this,&ViewMenu::onHiddenClicked);
+
+    this->addAction(reload);
+    this->addAction(hidden);
+}
+
+ViewMenu::~ViewMenu() {
+    delete reload;
+    delete hidden;
+}
+
+void ViewMenu::onReloadClicked() {
+    TabWidget::currentWidget()->reload();
+}
+
+void ViewMenu::onHiddenClicked() {
+#ifdef _WIN32
+    //Windows: Use the registry
+#else
+    Settings::writeSetting("view/hidden",QVariant(hidden->isChecked()).toString());
+#endif
+    TabWidget::currentWidget()->reload();
+}

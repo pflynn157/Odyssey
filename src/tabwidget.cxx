@@ -97,6 +97,15 @@ void TabWidget::updateTabName() {
     tabs->setTabText(tabs->currentIndex(),w->currentDirName());
 }
 
+QVector<BrowserWidget *> TabWidget::allWidgets() {
+    QVector<BrowserWidget *> widgets;
+    for (int i = 0; i<tabs->count(); i++) {
+        BrowserWidget *current = static_cast<BrowserWidget *>(tabs->widget(i));
+        widgets.push_back(current);
+    }
+    return widgets;
+}
+
 void TabWidget::onTabsChanged() {
     navigationBar->setBrowserWidget(currentWidget());
     addrText->setBrowserWidget(currentWidget());

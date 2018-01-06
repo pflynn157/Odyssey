@@ -38,6 +38,7 @@
 
 #include "menubar/filemenu.hh"
 #include "menubar/editmenu.hh"
+#include "menubar/viewmenu.hh"
 
 class FileMenu;
 class MenuBar;
@@ -56,6 +57,7 @@ private:
     MenuBar *menubar;
     FileMenu *filemenu;
     EditMenu *editmenu;
+    ViewMenu *viewmenu;
     AddressBarText *addrTxt;
     TabWidget *tabPane;
 };
