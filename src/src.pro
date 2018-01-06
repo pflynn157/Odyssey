@@ -46,7 +46,8 @@ SOURCES += \
     menubar/editmenu.cxx \
     menubar/viewmenu.cxx \
     menubar/helpmenu.cxx \
-    dialogs/helpdialog.cxx
+    dialogs/helpdialog.cxx \
+    dialogs/keyboardshortcutsdialog.cxx
 
 HEADERS += \
         window.hh \
@@ -69,10 +70,12 @@ HEADERS += \
     menubar/editmenu.hh \
     menubar/viewmenu.hh \
     menubar/helpmenu.hh \
-    dialogs/helpdialog.hh
+    dialogs/helpdialog.hh \
+    dialogs/keyboardshortcutsdialog.hh
 
 RESOURCES += \
     rsc.qrc
 
 FORMS += \
-    dialogs/helpdialog.ui
+    dialogs/helpdialog.ui \
+    dialogs/keyboardshortcutsdialog.ui

@@ -24,40 +24,17 @@
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#include <QIcon>
-#include <QApplication>
+#include "keyboardshortcutsdialog.hh"
+#include "ui_keyboardshortcutsdialog.h"
 
-#include "helpmenu.hh"
-#include "../dialogs/helpdialog.hh"
-#include "../dialogs/keyboardshortcutsdialog.hh"
-
-HelpMenu::HelpMenu() {
-    this->setTitle("Help");
-
-    keyboardShortcuts = new QAction("Keyboard Shortcuts",this);
-    aboutQt = new QAction("About Qt",this);
-    about = new QAction(QIcon::fromTheme("help-about"),"About",this);
-
-    connect(keyboardShortcuts,&QAction::triggered,this,&HelpMenu::onKeyboardShortcutsClicked);
-    connect(aboutQt,&QAction::triggered,qApp,&QApplication::aboutQt);
-    connect(about,&QAction::triggered,this,&HelpMenu::onAboutClicked);
-
-    this->addAction(keyboardShortcuts);
-    this->addSeparator();
-    this->addAction(aboutQt);
-    this->addAction(about);
+KeyboardShortcutsDialog::KeyboardShortcutsDialog(QWidget *parent) :
+    QDialog(parent),
+    ui(new Ui::KeyboardShortcutsDialog)
+{
+    ui->setupUi(this);
 }
 
-HelpMenu::~HelpMenu() {
-    delete keyboardShortcuts;
-    delete aboutQt;
-    delete about;
-}
-
-void HelpMenu::onKeyboardShortcutsClicked() {
-    KeyboardShortcutsDialog().exec();
-}
-
-void HelpMenu::onAboutClicked() {
-    HelpDialog().exec();
+KeyboardShortcutsDialog::~KeyboardShortcutsDialog()
+{
+    delete ui;
 }
