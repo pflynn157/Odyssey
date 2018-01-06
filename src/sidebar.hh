@@ -30,8 +30,10 @@
 #include <QVBoxLayout>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
+#include <QTimer>
 
 class PlacesList;
+class DeviceList;
 
 class SideBar : public QDockWidget {
     Q_OBJECT
@@ -42,6 +44,7 @@ private:
     QWidget *mainWidget;
     QVBoxLayout *layout;
     PlacesList *placeslist;
+    DeviceList *deviceslist;
 };
 
 class PlacesList : public QTreeWidget {
@@ -53,5 +56,17 @@ private:
     QTreeWidgetItem *home, *docs, *pics, *downloads,
         *music, *videos, *templates, *trash;
 private slots:
+    void onItemClicked(QTreeWidgetItem *item);
+};
+
+class DeviceList : public QTreeWidget {
+    Q_OBJECT
+public:
+    DeviceList();
+    ~DeviceList();
+private:
+    QTimer *timer;
+private slots:
+    void loadDrives();
     void onItemClicked(QTreeWidgetItem *item);
 };

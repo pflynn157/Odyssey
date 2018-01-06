@@ -5,6 +5,7 @@
 #-------------------------------------------------
 
 QT       += core gui
+unix:QT += Solid
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 

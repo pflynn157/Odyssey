@@ -28,6 +28,7 @@
 #include <QIcon>
 #include <QDir>
 #include <QTreeWidgetItem>
+#include <QStorageInfo>
 #include <iostream>
 
 #include "sidebar.hh"
@@ -37,7 +38,8 @@
 SideBar::SideBar()
     : mainWidget(new QWidget),
       layout(new QVBoxLayout),
-      placeslist(new PlacesList)
+      placeslist(new PlacesList),
+      deviceslist(new DeviceList)
 {
     this->setFeatures(QDockWidget::NoDockWidgetFeatures);
     this->setAllowedAreas(Qt::LeftDockWidgetArea | Qt::RightDockWidgetArea);
@@ -47,11 +49,13 @@ SideBar::SideBar()
     this->setWidget(mainWidget);
 
     layout->addWidget(placeslist);
+    layout->addWidget(deviceslist);
 }
 
 SideBar::~SideBar() {
     delete layout;
     delete placeslist;
+    delete deviceslist;
 }
 
 //PlacesList
@@ -142,4 +146,44 @@ void PlacesList::onItemClicked(QTreeWidgetItem *item) {
     } else if (title=="trash") {
         TabWidget::currentWidget()->loadDir(Trash::folderPath);
     }
+}
+
+//DevicesList
+//This displays removable devices on the user's computer
+
+DeviceList::DeviceList() {
+    this->setHeaderLabel("Devices");
+    this->setColumnCount(1);
+
+    loadDrives();
+
+    timer = new QTimer;
+    connect(timer,&QTimer::timeout,this,&DeviceList::loadDrives);
+    timer->start(3000);
+
+    connect(this,SIGNAL(itemClicked(QTreeWidgetItem*,int)),this,SLOT(onItemClicked(QTreeWidgetItem*)));
+}
+
+DeviceList::~DeviceList() {
+    timer->stop();
+    delete timer;
+}
+
+void DeviceList::loadDrives() {
+    this->clear();
+    auto list = QStorageInfo::mountedVolumes();
+    foreach (QStorageInfo d, list) {
+        if ((!d.rootPath().startsWith("/run"))&&(!d.rootPath().startsWith("/boot"))) {
+            QTreeWidgetItem *item = new QTreeWidgetItem(this);
+            item->setText(0,d.displayName());
+            item->setText(1,d.rootPath());
+            item->setToolTip(0,d.device());
+            item->setIcon(0,QIcon::fromTheme("drive-removable-media"));
+        }
+    }
+}
+
+void DeviceList::onItemClicked(QTreeWidgetItem *item) {
+    QString text = item->text(1);
+    TabWidget::currentWidget()->loadDir(text);
 }
