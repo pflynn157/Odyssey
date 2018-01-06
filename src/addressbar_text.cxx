@@ -34,6 +34,7 @@ AddressBarText::AddressBarText()
     : addressEntry(new QLineEdit)
 {
     this->setMovable(false);
+    this->setContextMenuPolicy(Qt::PreventContextMenu);
 
     addressEntry->setClearButtonEnabled(true);
     connect(addressEntry,&QLineEdit::returnPressed,this,&AddressBarText::onAddrEntryReturnPressed);

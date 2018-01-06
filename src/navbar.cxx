@@ -36,6 +36,7 @@ NavBar::NavBar()
       home(new QToolButton)
 {
     this->setMovable(false);
+    this->setContextMenuPolicy(Qt::PreventContextMenu);
 
     goBack->setIcon(QIcon::fromTheme("go-previous"));
     goUp->setIcon(QIcon::fromTheme("go-up"));
