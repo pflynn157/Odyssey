@@ -25,7 +25,6 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QDir>
-#include <iostream>
 
 #include "addressbar_buttons.hh"
 
@@ -61,6 +60,7 @@ void AddressBarButtons::parsePath(QString path) {
         if (lastPath.length()<path.length()) {
             if (path.startsWith(lastPath)) {
                 buildOnto = true;
+                //lastPathShorter = false;
             }
         } else {
             if (lastPath.startsWith(path)) {
@@ -69,7 +69,6 @@ void AddressBarButtons::parsePath(QString path) {
             }
         }
     }
-    std::cout << lastPath.toStdString() << std::endl;
 
     if (!path.endsWith("/")) {
         path+="/";
@@ -126,26 +125,11 @@ void AddressBarButtons::parsePath(QString path) {
             }
         }
     }
-
-    //Check to make sure we have an actual path
-    //If not, just reprint the whole thing from scratch
-    //This serves as bug protection
-    /*auto list = group->buttons();
-    QString toCheck = "/";
-    for (int i = 0; i<list.size(); i++) {
-        QString txt = list.at(i)->text();
-        if (txt!="/") {
-            toCheck+=txt+"/";
-        }
-    }
-    if (!QDir(toCheck).exists()) {
-        parseClean(path);
-    }*/
 }
 
 void AddressBarButtons::parseClean(QString path) {
     this->clear();
-    group->buttons().clear();
+    group = new QButtonGroup;
 
     AddrPushButton *bt1 = new AddrPushButton("/",bWidget);
     bt1->setText("/");
