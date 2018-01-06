@@ -77,6 +77,9 @@ Window::Window(QWidget *parent)
 
     tabPane = new TabWidget(navbar,addrTxt);
     this->setCentralWidget(tabPane);
+
+    sidebar = new SideBar;
+    this->addDockWidget(Qt::LeftDockWidgetArea,sidebar);
 }
 
 Window::~Window() {
@@ -87,6 +90,7 @@ Window::~Window() {
     delete navbar;
     delete addrTxt;
     delete tabPane;
+    delete sidebar;
 }
 
 void Window::closeApp() {

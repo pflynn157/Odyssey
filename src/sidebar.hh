@@ -26,40 +26,32 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 
-#include <QMainWindow>
-#include <QCloseEvent>
-#include <QKeyEvent>
-#include <QContextMenuEvent>
+#include <QDockWidget>
+#include <QVBoxLayout>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
 
-#include "navbar.hh"
-#include "addressbar_text.hh"
-#include "tabwidget.hh"
-#include "sidebar.hh"
+class PlacesList;
 
-#include "menubar/filemenu.hh"
-#include "menubar/editmenu.hh"
-#include "menubar/viewmenu.hh"
-#include "menubar/helpmenu.hh"
-
-class FileMenu;
-class MenuBar;
-
-class Window : public QMainWindow {
+class SideBar : public QDockWidget {
     Q_OBJECT
 public:
-    Window(QWidget *parent = 0);
-    ~Window();
-    void closeApp();
-protected:
-    void closeEvent(QCloseEvent *event);
-    void keyPressEvent(QKeyEvent *event);
+    SideBar();
+    ~SideBar();
 private:
-    NavBar *navbar;
-    FileMenu *filemenu;
-    EditMenu *editmenu;
-    ViewMenu *viewmenu;
-    HelpMenu *helpmenu;
-    AddressBarText *addrTxt;
-    TabWidget *tabPane;
-    SideBar *sidebar;
+    QWidget *mainWidget;
+    QVBoxLayout *layout;
+    PlacesList *placeslist;
+};
+
+class PlacesList : public QTreeWidget {
+    Q_OBJECT
+public:
+    PlacesList();
+    ~PlacesList();
+private:
+    QTreeWidgetItem *home, *docs, *pics, *downloads,
+        *music, *videos, *templates, *trash;
+private slots:
+    void onItemClicked(QTreeWidgetItem *item);
 };
