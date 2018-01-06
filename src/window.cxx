@@ -73,9 +73,13 @@ Window::Window(QWidget *parent)
     this->addToolBar(navbar);
 
     addrTxt = new AddressBarText;
+    addrTxt->hide();
     this->addToolBar(addrTxt);
 
-    tabPane = new TabWidget(navbar,addrTxt);
+    addrButtons = new AddressBarButtons;
+    this->addToolBar(addrButtons);
+
+    tabPane = new TabWidget(navbar,addrTxt,addrButtons);
     this->setCentralWidget(tabPane);
 
     sidebar = new SideBar;
@@ -89,6 +93,7 @@ Window::~Window() {
     delete helpmenu;
     delete navbar;
     delete addrTxt;
+    delete addrButtons;
     delete tabPane;
     delete sidebar;
 }

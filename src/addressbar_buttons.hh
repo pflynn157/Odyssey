@@ -26,42 +26,33 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 
-#include <QMainWindow>
-#include <QCloseEvent>
-#include <QKeyEvent>
-#include <QContextMenuEvent>
+#include <QToolBar>
+#include <QPushButton>
 
-#include "navbar.hh"
-#include "addressbar_text.hh"
-#include "addressbar_buttons.hh"
-#include "tabwidget.hh"
-#include "sidebar.hh"
+#include "browserwidget.hh"
 
-#include "menubar/filemenu.hh"
-#include "menubar/editmenu.hh"
-#include "menubar/viewmenu.hh"
-#include "menubar/helpmenu.hh"
+class AddrPushButton;
 
-class FileMenu;
-class MenuBar;
-
-class Window : public QMainWindow {
+class AddressBarButtons : public QToolBar {
     Q_OBJECT
 public:
-    Window(QWidget *parent = 0);
-    ~Window();
-    void closeApp();
-protected:
-    void closeEvent(QCloseEvent *event);
-    void keyPressEvent(QKeyEvent *event);
+    AddressBarButtons();
+    ~AddressBarButtons();
+    void setBrowserWidget(BrowserWidget *b);
+    void parsePath(QString path);
 private:
-    NavBar *navbar;
-    FileMenu *filemenu;
-    EditMenu *editmenu;
-    ViewMenu *viewmenu;
-    HelpMenu *helpmenu;
-    AddressBarText *addrTxt;
-    AddressBarButtons *addrButtons;
-    TabWidget *tabPane;
-    SideBar *sidebar;
+    BrowserWidget *bWidget;
+private slots:
+    void onDirChanged(QString path);
+};
+
+class AddrPushButton : public QPushButton {
+    Q_OBJECT
+public:
+    explicit AddrPushButton(QString path, BrowserWidget *b);
+private:
+    QString fullpath;
+    BrowserWidget *bWidget;
+private slots:
+    void onClicked();
 };

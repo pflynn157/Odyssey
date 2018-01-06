@@ -48,7 +48,8 @@ SOURCES += \
     menubar/helpmenu.cxx \
     dialogs/helpdialog.cxx \
     dialogs/keyboardshortcutsdialog.cxx \
-    sidebar.cxx
+    sidebar.cxx \
+    addressbar_buttons.cxx
 
 HEADERS += \
         window.hh \
@@ -73,7 +74,8 @@ HEADERS += \
     menubar/helpmenu.hh \
     dialogs/helpdialog.hh \
     dialogs/keyboardshortcutsdialog.hh \
-    sidebar.hh
+    sidebar.hh \
+    addressbar_buttons.hh
 
 RESOURCES += \
     rsc.qrc

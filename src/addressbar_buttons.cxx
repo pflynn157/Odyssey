@@ -24,44 +24,61 @@
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-#pragma once
-
-#include <QMainWindow>
-#include <QCloseEvent>
-#include <QKeyEvent>
-#include <QContextMenuEvent>
-
-#include "navbar.hh"
-#include "addressbar_text.hh"
 #include "addressbar_buttons.hh"
-#include "tabwidget.hh"
-#include "sidebar.hh"
 
-#include "menubar/filemenu.hh"
-#include "menubar/editmenu.hh"
-#include "menubar/viewmenu.hh"
-#include "menubar/helpmenu.hh"
+AddressBarButtons::AddressBarButtons() {
+    this->setMovable(false);
+}
 
-class FileMenu;
-class MenuBar;
+AddressBarButtons::~AddressBarButtons() {
+}
 
-class Window : public QMainWindow {
-    Q_OBJECT
-public:
-    Window(QWidget *parent = 0);
-    ~Window();
-    void closeApp();
-protected:
-    void closeEvent(QCloseEvent *event);
-    void keyPressEvent(QKeyEvent *event);
-private:
-    NavBar *navbar;
-    FileMenu *filemenu;
-    EditMenu *editmenu;
-    ViewMenu *viewmenu;
-    HelpMenu *helpmenu;
-    AddressBarText *addrTxt;
-    AddressBarButtons *addrButtons;
-    TabWidget *tabPane;
-    SideBar *sidebar;
-};
+void AddressBarButtons::setBrowserWidget(BrowserWidget *b) {
+    bWidget = b;
+    parsePath(bWidget->fsCurrentPath());
+    connect(bWidget,SIGNAL(dirChanged(QString)),this,SLOT(onDirChanged(QString)));
+}
+
+void AddressBarButtons::parsePath(QString path) {
+    this->clear();
+
+    AddrPushButton *bt1 = new AddrPushButton("/",bWidget);
+    bt1->setText("/");
+    this->addWidget(bt1);
+
+    QString name = "";
+    QString currentPath = "";
+    if (!path.endsWith("/")) {
+        path+="/";
+    }
+    for (int i = 0; i<path.size(); i++) {
+        currentPath+=path.at(i);
+        if (path.at(i)=='/') {
+            if (name!="") {
+                AddrPushButton *btn = new AddrPushButton(currentPath,bWidget);
+                btn->setText(name);
+                this->addWidget(btn);
+                name = "";
+            }
+        } else {
+            name+=path.at(i);
+        }
+    }
+}
+
+void AddressBarButtons::onDirChanged(QString path) {
+    parsePath(path);
+}
+
+//AddrPushButton
+//This is the button for our button bar
+
+AddrPushButton::AddrPushButton(QString path, BrowserWidget *b) {
+    fullpath = path;
+    bWidget = b;
+    connect(this,&QPushButton::clicked,this,&AddrPushButton::onClicked);
+}
+
+void AddrPushButton::onClicked() {
+    bWidget->loadDir(fullpath);
+}
