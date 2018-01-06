@@ -27,13 +27,19 @@
 #include <QVariant>
 #include <QIcon>
 #include <QApplication>
+#ifdef _WIN32
+    //Windows: Use the registry
+#else
 #include <cpplib/settings.hh>
+#endif
 
 #include "window.hh"
 #include "actions.hh"
 #include "clipboard.hh"
 
+#ifndef _WIN32
 using namespace CppLib;
+#endif
 
 Window::Window(QWidget *parent)
     : QMainWindow(parent),
@@ -43,8 +49,14 @@ Window::Window(QWidget *parent)
     this->setWindowIcon(QIcon::fromTheme("system-file-manager"));
     this->setMenuBar(menubar);
 
+#ifdef _WIN32
+    //Windows: Use the registry
+    int winX = 700;
+    int winY = 500;
+#else
     int winX = QVariant(Settings::getSetting("window/x","700")).toInt();
     int winY = QVariant(Settings::getSetting("window/y","500")).toInt();
+#endif
     this->resize(winX,winY);
 
     filemenu = new FileMenu(this);
@@ -76,8 +88,12 @@ Window::~Window() {
 }
 
 void Window::closeApp() {
+#ifdef _WIN32
+    //Windows: Use the registry
+#else
     Settings::writeSetting("window/x",QVariant(this->width()).toString());
     Settings::writeSetting("window/y",QVariant(this->height()).toString());
+#endif
 }
 
 void Window::closeEvent(QCloseEvent *event) {

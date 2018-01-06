@@ -25,20 +25,30 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QApplication>
+#ifdef _WIN32
+    //Windows: Use the registry
+#else
 #include <cpplib/settings.hh>
+#endif
 
 #include "window.hh"
 #include "clipboard.hh"
 #include "trash.hh"
 
+#ifndef _WIN32
 using namespace CppLib;
+#endif
 
 Clipboard clipboard;
 
 int main(int argc, char *argv[]) {
+#ifdef _WIN32
+    //Windows: Use the registry
+#else
     Settings::registerApp("cpp-explorer");
     Settings::setDefaultSettingsFile(":/rsc/settings.xml");
     Settings::initPaths();
+#endif
 
     QApplication a(argc, argv);
 
