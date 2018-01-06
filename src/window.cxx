@@ -27,6 +27,7 @@
 #include <QVariant>
 #include <QIcon>
 #include <QApplication>
+#include <QMenuBar>
 #ifdef _WIN32
     //Windows: Use the registry
 #else
@@ -42,12 +43,11 @@ using namespace CppLib;
 #endif
 
 Window::Window(QWidget *parent)
-    : QMainWindow(parent),
-      menubar(new MenuBar)
+    : QMainWindow(parent)
 {
     this->setWindowTitle("CppExplorer");
     this->setWindowIcon(QIcon::fromTheme("system-file-manager"));
-    this->setMenuBar(menubar);
+    this->menuBar()->setContextMenuPolicy(Qt::PreventContextMenu);
 
 #ifdef _WIN32
     //Windows: Use the registry
@@ -64,10 +64,10 @@ Window::Window(QWidget *parent)
     viewmenu = new ViewMenu;
     helpmenu = new HelpMenu;
 
-    menubar->addMenu(filemenu);
-    menubar->addMenu(editmenu);
-    menubar->addMenu(viewmenu);
-    menubar->addMenu(helpmenu);
+    this->menuBar()->addMenu(filemenu);
+    this->menuBar()->addMenu(editmenu);
+    this->menuBar()->addMenu(viewmenu);
+    this->menuBar()->addMenu(helpmenu);
 
     navbar = new NavBar;
     this->addToolBar(navbar);
@@ -80,7 +80,6 @@ Window::Window(QWidget *parent)
 }
 
 Window::~Window() {
-    delete menubar;
     delete filemenu;
     delete editmenu;
     delete viewmenu;
@@ -135,10 +134,4 @@ void Window::keyPressEvent(QKeyEvent *event) {
         }
     }
     QMainWindow::keyPressEvent(event);
-}
-
-//MenuBar
-//This is a custom menubar class. The only reason for its existence is to
-//suppress the default Qt context menu that it has
-void MenuBar::contextMenuEvent(QContextMenuEvent *) {
 }

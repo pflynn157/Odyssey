@@ -29,7 +29,6 @@
 #include <QMainWindow>
 #include <QCloseEvent>
 #include <QKeyEvent>
-#include <QMenuBar>
 #include <QContextMenuEvent>
 
 #include "navbar.hh"
@@ -55,17 +54,10 @@ protected:
     void keyPressEvent(QKeyEvent *event);
 private:
     NavBar *navbar;
-    MenuBar *menubar;
     FileMenu *filemenu;
     EditMenu *editmenu;
     ViewMenu *viewmenu;
     HelpMenu *helpmenu;
     AddressBarText *addrTxt;
     TabWidget *tabPane;
-};
-
-class MenuBar : public QMenuBar {
-    Q_OBJECT
-protected:
-    void contextMenuEvent(QContextMenuEvent *);
 };
