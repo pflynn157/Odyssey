@@ -24,10 +24,14 @@
 // WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#include <QDir>
+#include <iostream>
+
 #include "addressbar_buttons.hh"
 
 AddressBarButtons::AddressBarButtons() {
     this->setMovable(false);
+    group = new QButtonGroup;
 }
 
 AddressBarButtons::~AddressBarButtons() {
@@ -40,17 +44,116 @@ void AddressBarButtons::setBrowserWidget(BrowserWidget *b) {
 }
 
 void AddressBarButtons::parsePath(QString path) {
+    bool buildOnto = false;
+    bool lastPathShorter = true;
+    QString lastPath = "";
+    //If the last path was shorter, then we can just add buttons
+    //If it is longer, then we must select the right button
+    if (!group->buttons().isEmpty()) {
+        lastPath = "/";
+        auto list = group->buttons();
+        for (int i = 0; i<list.size(); i++) {
+            QString txt = list.at(i)->text();
+            if (txt!="/") {
+                lastPath+=txt+"/";
+            }
+        }
+        if (lastPath.length()<path.length()) {
+            if (path.startsWith(lastPath)) {
+                buildOnto = true;
+            }
+        } else {
+            if (lastPath.startsWith(path)) {
+                buildOnto = true;
+                lastPathShorter = false;
+            }
+        }
+    }
+    std::cout << lastPath.toStdString() << std::endl;
+
+    if (!path.endsWith("/")) {
+        path+="/";
+    }
+    if (!lastPath.endsWith("/")) {
+        lastPath+="/";
+    }
+
+    if (buildOnto==false) {
+        parseClean(path);
+    } else {
+        if (lastPathShorter) {
+            QString currentPath = "";
+            QString name = "";
+            for (int i = 0; i<path.length(); i++) {
+                if (currentPath==lastPath) {
+                    for (int j = i; j<path.length(); j++) {
+                        currentPath+=path.at(j);
+                        if (path.at(j)=='/') {
+                            if (name!="") {
+                                AddrPushButton *btn = new AddrPushButton(currentPath,bWidget);
+                                btn->setText(name);
+                                this->addWidget(btn);
+                                group->addButton(btn);
+                                btn->setChecked(true);
+                                name = "";
+                            }
+                        } else {
+                            name+=path.at(j);
+                        }
+                    }
+                } else {
+                    currentPath+=path.at(i);
+                }
+            }
+        } else {
+            QString lastName = "";
+            QString current = "";
+            for (int i = 0; i<path.length(); i++) {
+                if (path.at(i)=="/") {
+                    lastName = current;
+                    current = "";
+                } else {
+                    current+=path.at(i);
+                }
+            }
+
+            auto list = group->buttons();
+            for (int i = 0; i<list.length(); i++) {
+                if (list.at(i)->text()==lastName) {
+                    list.at(i)->setChecked(true);
+                    break;
+                }
+            }
+        }
+    }
+
+    //Check to make sure we have an actual path
+    //If not, just reprint the whole thing from scratch
+    //This serves as bug protection
+    /*auto list = group->buttons();
+    QString toCheck = "/";
+    for (int i = 0; i<list.size(); i++) {
+        QString txt = list.at(i)->text();
+        if (txt!="/") {
+            toCheck+=txt+"/";
+        }
+    }
+    if (!QDir(toCheck).exists()) {
+        parseClean(path);
+    }*/
+}
+
+void AddressBarButtons::parseClean(QString path) {
     this->clear();
+    group->buttons().clear();
 
     AddrPushButton *bt1 = new AddrPushButton("/",bWidget);
     bt1->setText("/");
     this->addWidget(bt1);
+    group->addButton(bt1);
 
     QString name = "";
     QString currentPath = "";
-    if (!path.endsWith("/")) {
-        path+="/";
-    }
     for (int i = 0; i<path.size(); i++) {
         currentPath+=path.at(i);
         if (path.at(i)=='/') {
@@ -58,6 +161,8 @@ void AddressBarButtons::parsePath(QString path) {
                 AddrPushButton *btn = new AddrPushButton(currentPath,bWidget);
                 btn->setText(name);
                 this->addWidget(btn);
+                group->addButton(btn);
+                btn->setChecked(true);
                 name = "";
             }
         } else {
@@ -74,6 +179,9 @@ void AddressBarButtons::onDirChanged(QString path) {
 //This is the button for our button bar
 
 AddrPushButton::AddrPushButton(QString path, BrowserWidget *b) {
+    this->setAutoExclusive(true);
+    this->setCheckable(true);
+
     fullpath = path;
     bWidget = b;
     connect(this,&QPushButton::clicked,this,&AddrPushButton::onClicked);

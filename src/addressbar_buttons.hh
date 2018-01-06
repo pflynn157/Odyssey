@@ -27,6 +27,7 @@
 #pragma once
 
 #include <QToolBar>
+#include <QButtonGroup>
 #include <QPushButton>
 
 #include "browserwidget.hh"
@@ -42,6 +43,8 @@ public:
     void parsePath(QString path);
 private:
     BrowserWidget *bWidget;
+    QButtonGroup *group;
+    void parseClean(QString path);
 private slots:
     void onDirChanged(QString path);
 };

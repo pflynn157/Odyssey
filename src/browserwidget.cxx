@@ -103,11 +103,12 @@ void BrowserWidget::setListView() {
 
 void BrowserWidget::loadDir(QString path, bool recordHistory, bool firstLoad) {
     if (recordHistory) {
-        emit dirChanged(path);
+        //emit dirChanged(path);
         if (!currentPath.isEmpty()) {
             historyList.push_front(currentPath);
             emit historyChanged();
         }
+        emit dirChanged(path);
     }
     currentPath = path;
     listWidget->clear();
