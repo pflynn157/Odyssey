@@ -11,7 +11,7 @@ greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 TARGET = CppExplorer
 TEMPLATE = app
 CONFIG += c++11
-LIBS += -lsettings
+unix:LIBS += -lsettings
 
 # The following define makes your compiler emit warnings if you use
 # any feature of Qt which has been marked as deprecated (the exact warnings
