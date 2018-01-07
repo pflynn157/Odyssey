@@ -51,6 +51,8 @@ public:
     Window(QWidget *parent = 0);
     ~Window();
     void closeApp();
+    static AddressBarText *addrTxt;
+    static AddressBarButtons *addrButtons;
 protected:
     void closeEvent(QCloseEvent *event);
     void keyPressEvent(QKeyEvent *event);
@@ -60,8 +62,6 @@ private:
     EditMenu *editmenu;
     ViewMenu *viewmenu;
     HelpMenu *helpmenu;
-    AddressBarText *addrTxt;
-    AddressBarButtons *addrButtons;
     TabWidget *tabPane;
     SideBar *sidebar;
 };

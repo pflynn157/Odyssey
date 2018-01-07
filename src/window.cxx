@@ -42,6 +42,9 @@
 using namespace CppLib;
 #endif
 
+AddressBarText *Window::addrTxt;
+AddressBarButtons *Window::addrButtons;
+
 Window::Window(QWidget *parent)
     : QMainWindow(parent)
 {
@@ -79,7 +82,7 @@ Window::Window(QWidget *parent)
     addrButtons = new AddressBarButtons;
     this->addToolBar(addrButtons);
 
-    tabPane = new TabWidget(navbar,addrTxt,addrButtons);
+    tabPane = new TabWidget(navbar);
     this->setCentralWidget(tabPane);
 
     sidebar = new SideBar;

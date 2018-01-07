@@ -28,18 +28,15 @@
 #include <iostream>
 
 #include "tabwidget.hh"
+#include "window.hh"
 
 QTabWidget *TabWidget::tabs;
 NavBar *TabWidget::navigationBar;
-AddressBarText *TabWidget::addrText;
-AddressBarButtons *TabWidget::addrButtons;
 
-TabWidget::TabWidget(NavBar *navbar, AddressBarText *addrTextBar, AddressBarButtons *addrButtonBar)
+TabWidget::TabWidget(NavBar *navbar)
     : layout(new QVBoxLayout)
 {
     navigationBar = navbar;
-    addrText = addrTextBar;
-    addrButtons = addrButtonBar;
 
     layout->setContentsMargins(0,0,0,0);
     this->setLayout(layout);
@@ -110,8 +107,8 @@ QVector<BrowserWidget *> TabWidget::allWidgets() {
 
 void TabWidget::onTabsChanged() {
     navigationBar->setBrowserWidget(currentWidget());
-    addrText->setBrowserWidget(currentWidget());
-    addrButtons->setBrowserWidget(currentWidget());
+    Window::addrTxt->setBrowserWidget(currentWidget());
+    Window::addrButtons->setBrowserWidget(currentWidget());
 }
 
 void TabWidget::onTabClosed(int index) {
