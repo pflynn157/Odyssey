@@ -30,18 +30,23 @@
 
 AddressBarButtons::AddressBarButtons()
     : subBar(new QToolBar),
+      spacer(new QWidget),
       endtoolbar(new EndToolbar)
 {
     this->setMovable(false);
     group = new QButtonGroup;
 
-    this->addWidget(endtoolbar);
+    spacer->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
+
     this->addWidget(subBar);
+    this->addWidget(spacer);
+    this->addWidget(endtoolbar);
 }
 
 AddressBarButtons::~AddressBarButtons() {
     delete group;
     delete endtoolbar;
+    delete spacer;
     delete subBar;
 }
 

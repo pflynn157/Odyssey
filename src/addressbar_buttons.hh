@@ -29,6 +29,7 @@
 #include <QToolBar>
 #include <QButtonGroup>
 #include <QPushButton>
+#include <QWidget>
 
 #include "browserwidget.hh"
 #include "endtoolbar.hh"
@@ -46,6 +47,7 @@ private:
     BrowserWidget *bWidget;
     QToolBar *subBar;
     QButtonGroup *group;
+    QWidget *spacer;
     EndToolbar *endtoolbar;
     void parseClean(QString path);
 private slots:
