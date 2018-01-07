@@ -39,8 +39,9 @@ public:
     void setBrowserWidget(BrowserWidget *b);
 private:
     BrowserWidget *bWidget;
-    QToolButton *iconView, *listView;
+    QToolButton *showTxtAddr, *iconView, *listView;
 private slots:
+    void onShowTxtAddr();
     void onIconViewClicked();
     void onListViewClicked();
 };

@@ -27,21 +27,24 @@
 #include <QIcon>
 
 #include "endtoolbar.hh"
+#include "window.hh"
 
 EndToolbar::EndToolbar()
-    : iconView(new QToolButton),
+    : showTxtAddr(new QToolButton),
+      iconView(new QToolButton),
       listView(new QToolButton)
 {
     this->setMovable(false);
-    /*this->setSizePolicy(QSizePolicy::Minimum,QSizePolicy::Ignored);
-    this->adjustSize();*/
 
+    showTxtAddr->setIcon(QIcon::fromTheme("insert-text"));
     iconView->setIcon(QIcon::fromTheme("view-list-icons"));
     listView->setIcon(QIcon::fromTheme("view-list-details"));
 
+    connect(showTxtAddr,&QToolButton::clicked,this,&EndToolbar::onShowTxtAddr);
     connect(iconView,&QToolButton::clicked,this,&EndToolbar::onIconViewClicked);
     connect(listView,&QToolButton::clicked,this,&EndToolbar::onListViewClicked);
 
+    this->addWidget(showTxtAddr);
     this->addWidget(iconView);
     this->addWidget(listView);
 
@@ -49,12 +52,23 @@ EndToolbar::EndToolbar()
 }
 
 EndToolbar::~EndToolbar() {
+    delete showTxtAddr;
     delete iconView;
     delete listView;
 }
 
 void EndToolbar::setBrowserWidget(BrowserWidget *b) {
     bWidget = b;
+}
+
+void EndToolbar::onShowTxtAddr() {
+    if (Window::addrTxt->isVisible()) {
+        Window::addrTxt->hide();
+        Window::addrButtons->show();
+    } else {
+        Window::addrTxt->show();
+        Window::addrButtons->hide();
+    }
 }
 
 void EndToolbar::onIconViewClicked() {
