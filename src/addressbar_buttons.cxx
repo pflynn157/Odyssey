@@ -28,16 +28,26 @@
 
 #include "addressbar_buttons.hh"
 
-AddressBarButtons::AddressBarButtons() {
+AddressBarButtons::AddressBarButtons()
+    : subBar(new QToolBar),
+      endtoolbar(new EndToolbar)
+{
     this->setMovable(false);
     group = new QButtonGroup;
+
+    this->addWidget(endtoolbar);
+    this->addWidget(subBar);
 }
 
 AddressBarButtons::~AddressBarButtons() {
+    delete group;
+    delete endtoolbar;
+    delete subBar;
 }
 
 void AddressBarButtons::setBrowserWidget(BrowserWidget *b) {
     bWidget = b;
+    endtoolbar->setBrowserWidget(bWidget);
     parsePath(bWidget->fsCurrentPath());
     connect(bWidget,SIGNAL(dirChanged(QString)),this,SLOT(onDirChanged(QString)));
 }
@@ -60,7 +70,6 @@ void AddressBarButtons::parsePath(QString path) {
         if (lastPath.length()<path.length()) {
             if (path.startsWith(lastPath)) {
                 buildOnto = true;
-                //lastPathShorter = false;
             }
         } else {
             if (lastPath.startsWith(path)) {
@@ -91,7 +100,7 @@ void AddressBarButtons::parsePath(QString path) {
                             if (name!="") {
                                 AddrPushButton *btn = new AddrPushButton(currentPath,bWidget);
                                 btn->setText(name);
-                                this->addWidget(btn);
+                                subBar->addWidget(btn);
                                 group->addButton(btn);
                                 btn->setChecked(true);
                                 name = "";
@@ -128,12 +137,12 @@ void AddressBarButtons::parsePath(QString path) {
 }
 
 void AddressBarButtons::parseClean(QString path) {
-    this->clear();
+    subBar->clear();
     group = new QButtonGroup;
 
     AddrPushButton *bt1 = new AddrPushButton("/",bWidget);
     bt1->setText("/");
-    this->addWidget(bt1);
+    subBar->addWidget(bt1);
     group->addButton(bt1);
 
     QString name = "";
@@ -144,7 +153,7 @@ void AddressBarButtons::parseClean(QString path) {
             if (name!="") {
                 AddrPushButton *btn = new AddrPushButton(currentPath,bWidget);
                 btn->setText(name);
-                this->addWidget(btn);
+                subBar->addWidget(btn);
                 group->addButton(btn);
                 btn->setChecked(true);
                 name = "";

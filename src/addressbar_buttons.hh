@@ -31,6 +31,7 @@
 #include <QPushButton>
 
 #include "browserwidget.hh"
+#include "endtoolbar.hh"
 
 class AddrPushButton;
 
@@ -43,7 +44,9 @@ public:
     void parsePath(QString path);
 private:
     BrowserWidget *bWidget;
+    QToolBar *subBar;
     QButtonGroup *group;
+    EndToolbar *endtoolbar;
     void parseClean(QString path);
 private slots:
     void onDirChanged(QString path);
