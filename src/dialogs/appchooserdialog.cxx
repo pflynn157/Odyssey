@@ -29,6 +29,8 @@
 #include <QFile>
 #include <QTextStream>
 #include <QProcess>
+#include <QMimeDatabase>
+#include <iostream>
 
 #include "appchooserdialog.hh"
 #include "tabwidget.hh"
@@ -47,11 +49,16 @@ AppChooserDialog::AppChooserDialog(QString currentFile)
     treeView->setHeaderLabel("Choose Application...");
     layout->addWidget(treeView);
 
+    suggestedApps = new QTreeWidgetItem(treeView);
+    suggestedApps->setText(0,"Suggested Applications");
+    suggestedApps->setIcon(0,QIcon::fromTheme("folder"));
+
     allApps = new QTreeWidgetItem(treeView);
     allApps->setText(0,"All Applications");
     allApps->setIcon(0,QIcon::fromTheme("folder"));
 
-    loadAll();
+    loadAll(true);
+    loadAll(false);
 
     connect(treeView,SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),this,SLOT(onItemDoubleClicked(QTreeWidgetItem*)));
 }
@@ -60,7 +67,7 @@ AppChooserDialog::~AppChooserDialog() {
     delete treeView;
 }
 
-void AppChooserDialog::loadAll() {
+void AppChooserDialog::loadAll(bool suggested) {
     QDir dir("/usr/share/applications");
     QStringList files = dir.entryList(QStringList() << "*.desktop",QDir::Files,QDir::Name);
     for (int i = 0; i<files.size(); i++) {
@@ -69,6 +76,10 @@ void AppChooserDialog::loadAll() {
         QString exe = "";
         QIcon icon;
         bool noDsp = false;
+        bool noDspFromLine = false;
+        if (suggested) {
+            noDsp = true;
+        }
         QStringList list = fileContent("/usr/share/applications/"+current);
         for (int j = 0; j<list.size(); j++) {
             if (QString(list.at(j)).startsWith("Name=")) {
@@ -92,16 +103,55 @@ void AppChooserDialog::loadAll() {
                 QString line = secondHalf(list.at(j));
                 if (QVariant(line).toBool()) {
                     noDsp = true;
+                    noDspFromLine = true;
+                }
+            }
+
+            if (suggested) {
+                if (QString(list.at(j)).startsWith("MimeType")) {
+                    QString listStr = secondHalf(list.at(j));
+                    QStringList list;
+                    QString current = "";
+                    for (int k = 0; k<listStr.size(); k++) {
+                        if (listStr.at(k)==';') {
+                            list.push_back(current);
+                            current = "";
+                        } else {
+                            current+=listStr.at(k);
+                        }
+                    }
+                    if (current!="") {
+                        list.push_back(current);
+                    }
+
+                    QMimeDatabase db;
+                    QString mime = db.mimeTypeForFile(currentFilePath).name();
+                    if (list.contains(mime)) {
+                        if (!noDspFromLine) {
+                            noDsp = false;
+                        }
+                    }
                 }
             }
         }
 
         if (!noDsp) {
-            QTreeWidgetItem *item = new QTreeWidgetItem(allApps);
+            QTreeWidgetItem *item;
+            if (suggested) {
+                item = new QTreeWidgetItem(suggestedApps);
+            } else {
+                item = new QTreeWidgetItem(allApps);
+            }
+
             item->setText(0,name);
             item->setIcon(0,icon);
             item->setText(1,exe);
-            allApps->addChild(item);
+
+            if (suggested) {
+                suggestedApps->addChild(item);
+            } else {
+                allApps->addChild(item);
+            }
         }
     }
 }
@@ -135,7 +185,7 @@ QString AppChooserDialog::secondHalf(QString line) {
 
 void AppChooserDialog::onItemDoubleClicked(QTreeWidgetItem *item) {
     QString name = item->text(0);
-    if (name=="All Applications") {
+    if ((name=="All Applications")||(name=="Suggested Applications")) {
         return;
     }
     QString exe = item->text(1);

@@ -42,8 +42,9 @@ private:
     QString currentFilePath;
     QVBoxLayout *layout;
     QTreeWidget *treeView;
+    QTreeWidgetItem *suggestedApps;
     QTreeWidgetItem *allApps;
-    void loadAll();
+    void loadAll(bool suggested);
     QStringList fileContent(QString file);
     QString secondHalf(QString line);
 private slots:
