@@ -184,6 +184,15 @@ QString AppChooserDialog::secondHalf(QString line) {
     return content;
 }
 
+void AppChooserDialog::launchApp(QString exe) {
+    QString path = TabWidget::currentWidget()->fsCurrentPath();
+    path+=currentFilePath;
+    QStringList args;
+    args.push_back("-c");
+    args.push_back(exe+" "+path);
+    QProcess::execute("/bin/bash",args);
+}
+
 void AppChooserDialog::onItemDoubleClicked(QTreeWidgetItem *item) {
     QString name = item->text(0);
     if ((name=="All Applications")||(name=="Suggested Applications")) {
@@ -191,10 +200,5 @@ void AppChooserDialog::onItemDoubleClicked(QTreeWidgetItem *item) {
     }
     QString exe = item->text(1);
     this->close();
-    QString path = TabWidget::currentWidget()->fsCurrentPath();
-    path+=currentFilePath;
-    QStringList args;
-    args.push_back("-c");
-    args.push_back(exe+" "+path);
-    QProcess::execute("/bin/bash",args);
+    launchApp(exe);
 }

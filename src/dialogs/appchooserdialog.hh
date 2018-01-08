@@ -47,6 +47,7 @@ private:
     void loadAll(bool suggested);
     QStringList fileContent(QString file);
     QString secondHalf(QString line);
+    void launchApp(QString exe);
 private slots:
     void onItemDoubleClicked(QTreeWidgetItem *item);
 };
