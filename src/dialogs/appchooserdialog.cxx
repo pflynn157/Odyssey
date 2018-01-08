@@ -37,7 +37,8 @@
 
 AppChooserDialog::AppChooserDialog(QString currentFile)
     : layout(new QVBoxLayout),
-      treeView(new QTreeWidget)
+      treeView(new QTreeWidget),
+      dialogButtons(new QDialogButtonBox)
 {
     currentFilePath = currentFile;
 
@@ -48,6 +49,9 @@ AppChooserDialog::AppChooserDialog(QString currentFile)
     treeView->setColumnCount(1);
     treeView->setHeaderLabel("Choose Application...");
     layout->addWidget(treeView);
+
+    dialogButtons->setStandardButtons(QDialogButtonBox::Ok | QDialogButtonBox::Cancel);
+    layout->addWidget(dialogButtons);
 
     suggestedApps = new QTreeWidgetItem(treeView);
     suggestedApps->setText(0,"Suggested Applications");
@@ -62,10 +66,13 @@ AppChooserDialog::AppChooserDialog(QString currentFile)
     loadAll(false);
 
     connect(treeView,SIGNAL(itemDoubleClicked(QTreeWidgetItem*,int)),this,SLOT(onItemDoubleClicked(QTreeWidgetItem*)));
+    connect(dialogButtons,&QDialogButtonBox::rejected,this,&AppChooserDialog::onCancelClicked);
+    connect(dialogButtons,&QDialogButtonBox::accepted,this,&AppChooserDialog::onOkClicked);
 }
 
 AppChooserDialog::~AppChooserDialog() {
     delete treeView;
+    delete dialogButtons;
 }
 
 void AppChooserDialog::loadAll(bool suggested) {
@@ -199,6 +206,20 @@ void AppChooserDialog::onItemDoubleClicked(QTreeWidgetItem *item) {
         return;
     }
     QString exe = item->text(1);
+    this->close();
+    launchApp(exe);
+}
+
+void AppChooserDialog::onCancelClicked() {
+    this->close();
+}
+
+void AppChooserDialog::onOkClicked() {
+    QString name = treeView->currentItem()->text(0);
+    if ((name=="All Applications")||(name=="Suggested Applications")) {
+        return;
+    }
+    QString exe = treeView->currentItem()->text(1);
     this->close();
     launchApp(exe);
 }

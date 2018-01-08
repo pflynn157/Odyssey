@@ -29,6 +29,7 @@
 #include <QDialog>
 #include <QString>
 #include <QVBoxLayout>
+#include <QDialogButtonBox>
 #include <QTreeWidget>
 #include <QTreeWidgetItem>
 #include <QStringList>
@@ -42,6 +43,7 @@ private:
     QString currentFilePath;
     QVBoxLayout *layout;
     QTreeWidget *treeView;
+    QDialogButtonBox *dialogButtons;
     QTreeWidgetItem *suggestedApps;
     QTreeWidgetItem *allApps;
     void loadAll(bool suggested);
@@ -50,4 +52,6 @@ private:
     void launchApp(QString exe);
 private slots:
     void onItemDoubleClicked(QTreeWidgetItem *item);
+    void onCancelClicked();
+    void onOkClicked();
 };
