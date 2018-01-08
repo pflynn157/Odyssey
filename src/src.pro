@@ -49,7 +49,8 @@ SOURCES += \
     dialogs/helpdialog.cxx \
     dialogs/keyboardshortcutsdialog.cxx \
     sidebar.cxx \
-    addressbar_buttons.cxx
+    addressbar_buttons.cxx \
+    dialogs/appchooserdialog.cxx
 
 HEADERS += \
         window.hh \
@@ -75,7 +76,8 @@ HEADERS += \
     dialogs/helpdialog.hh \
     dialogs/keyboardshortcutsdialog.hh \
     sidebar.hh \
-    addressbar_buttons.hh
+    addressbar_buttons.hh \
+    dialogs/appchooserdialog.hh
 
 RESOURCES += \
     rsc.qrc

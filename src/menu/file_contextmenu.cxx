@@ -31,11 +31,13 @@
 #include "actions.hh"
 #include "tabwidget.hh"
 #include "trash.hh"
+#include "../dialogs/appchooserdialog.hh"
 
 FileContextMenu::FileContextMenu(BrowserWidget *b) {
     bWidget = b;
 
     open = new QAction(QIcon::fromTheme("document-open"),"Open",this);
+    openWith = new QAction("Open With",this);
     cut = new QAction(QIcon::fromTheme("edit-cut"),"Cut",this);
     copy = new QAction(QIcon::fromTheme("edit-copy"),"Copy",this);
     rename = new QAction(QIcon::fromTheme("edit-rename"),"Rename",this);
@@ -44,6 +46,7 @@ FileContextMenu::FileContextMenu(BrowserWidget *b) {
     deleteFile = new QAction(QIcon::fromTheme("edit-delete"),"Delete",this);
 
     connect(open,&QAction::triggered,this,&FileContextMenu::onOpenClicked);
+    connect(openWith,&QAction::triggered,this,&FileContextMenu::onOpenWithClicked);
     connect(cut,&QAction::triggered,this,&FileContextMenu::onCutClicked);
     connect(copy,&QAction::triggered,this,&FileContextMenu::onCopyClicked);
     connect(rename,&QAction::triggered,this,&FileContextMenu::onRenameClicked);
@@ -52,6 +55,7 @@ FileContextMenu::FileContextMenu(BrowserWidget *b) {
     connect(deleteFile,&QAction::triggered,this,&FileContextMenu::onDeleteClicked);
 
     this->addAction(open);
+    this->addAction(openWith);
     this->addSeparator();
     this->addAction(cut);
     this->addAction(copy);
@@ -68,6 +72,7 @@ FileContextMenu::FileContextMenu(BrowserWidget *b) {
 
 FileContextMenu::~FileContextMenu() {
     delete open;
+    delete openWith;
     delete cut;
     delete copy;
     delete rename;
@@ -78,6 +83,11 @@ FileContextMenu::~FileContextMenu() {
 
 void FileContextMenu::onOpenClicked() {
     Actions::openCurrentFile();
+}
+
+void FileContextMenu::onOpenWithClicked() {
+    AppChooserDialog dialog(bWidget->currentItemName());
+    dialog.exec();
 }
 
 void FileContextMenu::onCutClicked() {

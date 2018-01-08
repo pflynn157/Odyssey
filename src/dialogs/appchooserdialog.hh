@@ -26,26 +26,26 @@
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #pragma once
 
-#include <QMenu>
-#include <QAction>
+#include <QDialog>
+#include <QString>
+#include <QVBoxLayout>
+#include <QTreeWidget>
+#include <QTreeWidgetItem>
+#include <QStringList>
 
-#include "../browserwidget.hh"
-
-class FileContextMenu : public QMenu {
+class AppChooserDialog : public QDialog {
     Q_OBJECT
 public:
-    explicit FileContextMenu(BrowserWidget *b);
-    ~FileContextMenu();
+    explicit AppChooserDialog(QString currentFile);
+    ~AppChooserDialog();
 private:
-    BrowserWidget *bWidget;
-    QAction *open, *openWith, *cut, *copy, *rename, *trash, *restore, *deleteFile;
+    QString currentFilePath;
+    QVBoxLayout *layout;
+    QTreeWidget *treeView;
+    QTreeWidgetItem *allApps;
+    void loadAll();
+    QStringList fileContent(QString file);
+    QString secondHalf(QString line);
 private slots:
-    void onOpenClicked();
-    void onOpenWithClicked();
-    void onCutClicked();
-    void onCopyClicked();
-    void onRenameClicked();
-    void onTrashClicked();
-    void onRestoreClicked();
-    void onDeleteClicked();
+    void onItemDoubleClicked(QTreeWidgetItem *item);
 };
