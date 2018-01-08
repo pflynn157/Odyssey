@@ -68,6 +68,7 @@ void AppChooserDialog::loadAll() {
         QString name = current;
         QString exe = "";
         QIcon icon;
+        bool noDsp = false;
         QStringList list = fileContent("/usr/share/applications/"+current);
         for (int j = 0; j<list.size(); j++) {
             if (QString(list.at(j)).startsWith("Name=")) {
@@ -87,14 +88,21 @@ void AppChooserDialog::loadAll() {
                     }
                     exe+=exeTmp.at(k);
                 }
+            } else if (QString(list.at(j)).startsWith("NoDisplay")) {
+                QString line = secondHalf(list.at(j));
+                if (QVariant(line).toBool()) {
+                    noDsp = true;
+                }
             }
         }
 
-        QTreeWidgetItem *item = new QTreeWidgetItem(allApps);
-        item->setText(0,name);
-        item->setIcon(0,icon);
-        item->setText(1,exe);
-        allApps->addChild(item);
+        if (!noDsp) {
+            QTreeWidgetItem *item = new QTreeWidgetItem(allApps);
+            item->setText(0,name);
+            item->setIcon(0,icon);
+            item->setText(1,exe);
+            allApps->addChild(item);
+        }
     }
 }
 
