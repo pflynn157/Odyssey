@@ -52,6 +52,7 @@ AppChooserDialog::AppChooserDialog(QString currentFile)
     suggestedApps = new QTreeWidgetItem(treeView);
     suggestedApps->setText(0,"Suggested Applications");
     suggestedApps->setIcon(0,QIcon::fromTheme("folder"));
+    suggestedApps->setExpanded(true);
 
     allApps = new QTreeWidgetItem(treeView);
     allApps->setText(0,"All Applications");
