@@ -25,8 +25,10 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <QDir>
+#include <QCursor>
 
 #include "addressbar_buttons.hh"
+#include "tabwidget.hh"
 
 AddressBarButtons::AddressBarButtons()
     : subBar(new QToolBar),
@@ -186,6 +188,44 @@ AddrPushButton::AddrPushButton(QString path, BrowserWidget *b) {
     connect(this,&QPushButton::clicked,this,&AddrPushButton::onClicked);
 }
 
+void AddrPushButton::mousePressEvent(QMouseEvent *event) {
+    if (event->button()==Qt::RightButton) {
+        AddrButtonMenu menu(bWidget,fullpath);
+        menu.exec(QCursor::pos());
+    }
+    QPushButton::mousePressEvent(event);
+}
+
 void AddrPushButton::onClicked() {
     bWidget->loadDir(fullpath);
+}
+
+//AddrButtonMenu
+//The context menu displayed when the user right-clicks on the buttons
+
+AddrButtonMenu::AddrButtonMenu(BrowserWidget *b, QString fullpath) {
+    bWidget = b;
+    path = fullpath;
+
+    open = new QAction("Open",this);
+    openTab = new QAction("Open in New Tab",this);
+
+    connect(open,&QAction::triggered,this,&AddrButtonMenu::onOpenClicked);
+    connect(openTab,&QAction::triggered,this,&AddrButtonMenu::onOpenTabClicked);
+
+    this->addAction(open);
+    this->addAction(openTab);
+}
+
+AddrButtonMenu::~AddrButtonMenu() {
+    delete open;
+    delete openTab;
+}
+
+void AddrButtonMenu::onOpenClicked() {
+    bWidget->loadDir(path);
+}
+
+void AddrButtonMenu::onOpenTabClicked() {
+    TabWidget::addNewTab(path);
 }

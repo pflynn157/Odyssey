@@ -30,11 +30,15 @@
 #include <QButtonGroup>
 #include <QPushButton>
 #include <QWidget>
+#include <QMouseEvent>
+#include <QMenu>
+#include <QAction>
 
 #include "browserwidget.hh"
 #include "endtoolbar.hh"
 
 class AddrPushButton;
+class AddrButtonMenu;
 
 class AddressBarButtons : public QToolBar {
     Q_OBJECT
@@ -58,9 +62,25 @@ class AddrPushButton : public QPushButton {
     Q_OBJECT
 public:
     explicit AddrPushButton(QString path, BrowserWidget *b);
+protected:
+    void mousePressEvent(QMouseEvent *event);
 private:
     QString fullpath;
     BrowserWidget *bWidget;
 private slots:
     void onClicked();
+};
+
+class AddrButtonMenu : public QMenu {
+    Q_OBJECT
+public:
+    explicit AddrButtonMenu(BrowserWidget *b, QString fullpath);
+    ~AddrButtonMenu();
+private:
+    BrowserWidget *bWidget;
+    QString path;
+    QAction *open, *openTab;
+private slots:
+    void onOpenClicked();
+    void onOpenTabClicked();
 };
