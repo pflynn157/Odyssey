@@ -34,6 +34,7 @@ AddressBarButtons::AddressBarButtons()
       endtoolbar(new EndToolbar)
 {
     this->setMovable(false);
+    this->setContextMenuPolicy(Qt::PreventContextMenu);
     group = new QButtonGroup;
 
     spacer->setSizePolicy(QSizePolicy::Expanding,QSizePolicy::Preferred);
