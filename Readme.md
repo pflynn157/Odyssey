@@ -1,3 +1,18 @@
 ## CppExplorer
 
-CppExplorer is a file explorer written in C++ using the Qt framework. As of version 1, it has all the key features needed by a file explorer. Version 1 is our first release. Therefore, you will not find it to be overly pratical. This will change very quickly, possibly the time you are reading it. This README will be updated to be more thorough as the program matures. Note: This is currently being developed on Linux; it has not been tested on any other platforms. However, I am designing it to be easily ported to other platforms, so Windows support is planned. Stay tuned!
+CppExplorer is a file explorer written in C++ using the Qt framework. It has many of the features you would expect in a file explorer. Currently, it only runs on Linux. I was successful building it on Windows, but it had some issues. Windows support is planned, but that is down the line. Below are some of the current features:   
+
+1. Tabs (If you are a Linux or Mac user, you will know how great these are)
+2. Theme icon support (pulls from the current theme)
+3. Icon by mimetype (pulls from theme)
+4. Button and text address bars
+5. History support (used with the back button)
+6. Full cut/copy/paste support, across tabs and with multiple files
+7. Trash support (move to trash and restore from trash)
+8. Application chooser for files (based on mimetype)
+9. Keyboard shortcuts
+10. Places sidebar
+11. Drive list (harddrive, usb drive, cd, etc)
+12. Background refresh   
+
+We are currently using the QMake build system. We have plans to convert to CMake in the near future. CppExplorer is not quite ready for everyday use, but we are getting there!
