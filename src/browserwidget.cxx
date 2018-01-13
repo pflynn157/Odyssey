@@ -29,6 +29,9 @@
 #include <QIcon>
 #include <QCursor>
 #include <QDesktopServices>
+#include <QImageReader>
+#include <QPixmapCache>
+#include <QPixmap>
 #include <QMimeDatabase>
 #ifdef _WIN32
     //Windows: use the registry
@@ -142,8 +145,18 @@ void BrowserWidget::loadDir(QString path, bool recordHistory, bool firstLoad) {
         QListWidgetItem *item = new QListWidgetItem(files.at(i));
         QIcon defaultIcon = QIcon::fromTheme("text-plain");
         QMimeDatabase db;
-        QIcon icon = QIcon::fromTheme(db.mimeTypeForFile(fsCurrentPath()+files.at(i)).iconName(),defaultIcon);
-        item->setIcon(icon);
+        if (!QImageReader(fsCurrentPath()+files.at(i)).format().isEmpty()) {
+            QString key = fsCurrentPath()+files.at(i);
+            QPixmap pm;
+            if (!QPixmapCache::find(key,&pm)) {
+                pm.load(key);
+                QPixmapCache::insert(key,pm);
+            }
+            item->setIcon(pm);
+        } else {
+            QIcon icon = QIcon::fromTheme(db.mimeTypeForFile(fsCurrentPath()+files.at(i)).iconName(),defaultIcon);
+            item->setIcon(icon);
+        }
         fileItems.push_back(item);
     }
 
