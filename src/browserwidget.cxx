@@ -152,7 +152,11 @@ void BrowserWidget::loadDir(QString path, bool recordHistory, bool firstLoad) {
                 pm.load(key);
                 QPixmapCache::insert(key,pm);
             }
-            item->setIcon(pm);
+            if (pm.isNull()) {
+                item->setIcon(defaultIcon);
+            } else {
+                item->setIcon(pm);
+            }
         } else {
             QIcon icon = QIcon::fromTheme(db.mimeTypeForFile(fsCurrentPath()+files.at(i)).iconName(),defaultIcon);
             item->setIcon(icon);
@@ -196,18 +200,58 @@ QStringList BrowserWidget::history() {
 }
 
 void BrowserWidget::reload() {
+    //Get all currently selected items so we can re-select them
     QList<QListWidgetItem *> items = listWidget->selectedItems();
     QStringList oldNames;
     for (int i = 0; i<items.size(); i++) {
         oldNames.push_back(items.at(i)->text());
     }
-    loadDir(currentPath,false);
 
+    //Get all items currently in the view
+    QStringList currentItems;
     for (int i = 0; i<listWidget->count(); i++) {
         QListWidgetItem *item = listWidget->item(i);
-        for (int j = 0; j<oldNames.size(); j++) {
-            if (item->text()==oldNames.at(j)) {
-                item->setSelected(true);
+        currentItems.push_back(item->text());
+    }
+
+    //Load items in the current directory
+    bool hidden = QVariant(Settings::getSetting("view/hidden","false")).toBool();
+    QStringList dirItems;
+    QDir dir(fsCurrentPath());
+    if (hidden) {
+        dirItems = dir.entryList(QDir::AllEntries | QDir::NoDotAndDotDot);
+    } else {
+        dirItems = dir.entryList(QDir::AllDirs | QDir::Files | QDir::NoDotAndDotDot);
+    }
+
+    //Check to see if there are any items in the directory stringlist that are not
+    //in the current view list
+    bool found = false;
+    for (int i = 0; i<dirItems.size(); i++) {
+        if (!currentItems.contains(dirItems.at(i))) {
+            found = true;
+            break;
+        }
+    }
+    if (found==false) {
+        for (int i = 0; i<currentItems.size(); i++) {
+            if (!dirItems.contains(currentItems.at(i))) {
+                found = true;
+                break;
+            }
+        }
+    }
+
+    //If found, reload
+    if (found) {
+        loadDir(currentPath,false);
+
+        for (int i = 0; i<listWidget->count(); i++) {
+            QListWidgetItem *item = listWidget->item(i);
+            for (int j = 0; j<oldNames.size(); j++) {
+                if (item->text()==oldNames.at(j)) {
+                    item->setSelected(true);
+                }
             }
         }
     }
