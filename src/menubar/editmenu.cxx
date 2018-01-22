@@ -35,12 +35,12 @@
 EditMenu::EditMenu() {
     this->setTitle("Edit");
 
-    selectAll = new QAction(QIcon::fromTheme("edit-select-all"),"Select All",this);
-    cut = new QAction(QIcon::fromTheme("edit-cut"),"Cut",this);
-    copy = new QAction(QIcon::fromTheme("edit-copy"),"Copy",this);
-    paste = new QAction(QIcon::fromTheme("edit-paste"),"Paste",this);
-    trash = new QAction(QIcon::fromTheme("user-trash"),"Trash",this);
-    deleteFile = new QAction(QIcon::fromTheme("edit-delete"),"Delete",this);
+    selectAll = new QAction(QIcon::fromTheme("edit-select-all",QPixmap(":/icons/edit-select-all.svg")),"Select All",this);
+    cut = new QAction(QIcon::fromTheme("edit-cut",QPixmap(":/icons/edit-cut.svg")),"Cut",this);
+    copy = new QAction(QIcon::fromTheme("edit-copy",QPixmap(":/icons/edit-copy.svg")),"Copy",this);
+    paste = new QAction(QIcon::fromTheme("edit-paste",QPixmap(":/icons/edit-paste.svg")),"Paste",this);
+    trash = new QAction(QIcon::fromTheme("user-trash",QPixmap(":/icons/user-trash.svg")),"Trash",this);
+    deleteFile = new QAction(QIcon::fromTheme("edit-delete",QPixmap(":/icons/edit-delete.svg")),"Delete",this);
 
     selectAll->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_A));
     cut->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_X));

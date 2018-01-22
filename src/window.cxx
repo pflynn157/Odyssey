@@ -49,12 +49,12 @@ Window::Window(QWidget *parent)
     : QMainWindow(parent)
 {
     this->setWindowTitle("CppExplorer");
-    this->setWindowIcon(QIcon::fromTheme("system-file-manager"));
+    this->setWindowIcon(QIcon::fromTheme("system-file-manager",QPixmap(":/icons/system-file-manager.svg")));
     this->menuBar()->setContextMenuPolicy(Qt::PreventContextMenu);
 
 #ifdef _WIN32
     //Windows: Use the registry
-    int winX = 700;
+    int winX = 900;
     int winY = 500;
 #else
     int winX = QVariant(Settings::getSetting("window/x","700")).toInt();

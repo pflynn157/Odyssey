@@ -37,11 +37,11 @@ FileMenu::FileMenu(Window *p) {
 
     this->setTitle("File");
 
-    newTab = new QAction(QIcon::fromTheme("tab-new"),"New Tab",this);
-    closeTab = new QAction(QIcon::fromTheme("tab-close"),"Close Tab",this);
-    newFile = new QAction(QIcon::fromTheme("document-new"),"New File",this);
-    newFolder = new QAction(QIcon::fromTheme("folder-new"),"New Folder",this);
-    quit = new QAction(QIcon::fromTheme("application-exit"),"Exit",this);
+    newTab = new QAction(QIcon::fromTheme("tab-new",QPixmap(":/icons/tab-new.svg")),"New Tab",this);
+    closeTab = new QAction(QIcon::fromTheme("tab-close",QPixmap(":/icons/window-close.svg")),"Close Tab",this);
+    newFile = new QAction(QIcon::fromTheme("document-new",QPixmap(":/icons/document-new.svg")),"New File",this);
+    newFolder = new QAction(QIcon::fromTheme("folder-new",QPixmap(":/icons/folder-new.svg")),"New Folder",this);
+    quit = new QAction(QIcon::fromTheme("application-exit",QPixmap(":/icons/application-exit.svg")),"Exit",this);
 
     newTab->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_T));
     closeTab->setShortcut(QKeySequence(Qt::CTRL+Qt::SHIFT+Qt::Key_T));

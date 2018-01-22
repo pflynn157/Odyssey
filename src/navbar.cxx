@@ -38,10 +38,10 @@ NavBar::NavBar()
     this->setMovable(false);
     this->setContextMenuPolicy(Qt::PreventContextMenu);
 
-    goBack->setIcon(QIcon::fromTheme("go-previous"));
-    goUp->setIcon(QIcon::fromTheme("go-up"));
-    refresh->setIcon(QIcon::fromTheme("view-refresh"));
-    home->setIcon(QIcon::fromTheme("go-home"));
+    goBack->setIcon(QIcon::fromTheme("go-previous",QPixmap(":/icons/go-previous.svg")));
+    goUp->setIcon(QIcon::fromTheme("go-up",QPixmap(":/icons/go-up.svg")));
+    refresh->setIcon(QIcon::fromTheme("view-refresh",QPixmap(":/icons/view-refresh.svg")));
+    home->setIcon(QIcon::fromTheme("go-home",QPixmap(":/icons/user-home.svg")));
 
     goBack->setEnabled(false);
     goUp->setEnabled(false);

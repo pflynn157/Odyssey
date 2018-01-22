@@ -42,7 +42,7 @@ using namespace CppLib;
 ViewMenu::ViewMenu() {
     this->setTitle("View");
 
-    reload = new QAction(QIcon::fromTheme("view-refresh"),"Reload",this);
+    reload = new QAction(QIcon::fromTheme("view-refresh",QPixmap(":/icons/view-refresh.svg")),"Reload",this);
     hidden = new QAction("View Hidden Files",this);
 
     hidden->setCheckable(true);

@@ -36,9 +36,9 @@ EndToolbar::EndToolbar()
 {
     this->setMovable(false);
 
-    showTxtAddr->setIcon(QIcon::fromTheme("insert-text"));
-    iconView->setIcon(QIcon::fromTheme("view-list-icons"));
-    listView->setIcon(QIcon::fromTheme("view-list-details"));
+    showTxtAddr->setIcon(QIcon::fromTheme("insert-text",QPixmap(":/icons/document-edit.svg")));
+    iconView->setIcon(QIcon::fromTheme("view-list-icons",QPixmap(":/icons/view-list-icons.svg")));
+    listView->setIcon(QIcon::fromTheme("view-list-details",QPixmap(":/icons/view-list-details.svg")));
 
     connect(showTxtAddr,&QToolButton::clicked,this,&EndToolbar::onShowTxtAddr);
     connect(iconView,&QToolButton::clicked,this,&EndToolbar::onIconViewClicked);

@@ -80,7 +80,8 @@ HEADERS += \
     dialogs/appchooserdialog.hh
 
 RESOURCES += \
-    rsc.qrc
+    rsc.qrc \
+    icons.qrc
 
 FORMS += \
     dialogs/helpdialog.ui \

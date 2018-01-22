@@ -36,7 +36,7 @@ HelpMenu::HelpMenu() {
 
     keyboardShortcuts = new QAction("Keyboard Shortcuts",this);
     aboutQt = new QAction("About Qt",this);
-    about = new QAction(QIcon::fromTheme("help-about"),"About",this);
+    about = new QAction(QIcon::fromTheme("help-about",QPixmap(":/icons/help-about.svg")),"About",this);
 
     connect(keyboardShortcuts,&QAction::triggered,this,&HelpMenu::onKeyboardShortcutsClicked);
     connect(aboutQt,&QAction::triggered,qApp,&QApplication::aboutQt);

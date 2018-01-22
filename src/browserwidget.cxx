@@ -137,12 +137,15 @@ void BrowserWidget::loadDir(QString path, bool recordHistory, bool firstLoad) {
 
     for (int i = 0; i<folders.size(); i++) {
         QListWidgetItem *item = new QListWidgetItem(folders.at(i));
-        item->setIcon(QIcon::fromTheme("folder"));
+        item->setIcon(QIcon::fromTheme("folder",QPixmap(":/icons/folder.svg")));
         folderItems.push_back(item);
     }
 
     for (int i = 0; i<files.size(); i++) {
         QListWidgetItem *item = new QListWidgetItem(files.at(i));
+#ifdef _WIN32
+        item->setIcon(QPixmap(":/icons/file.svg"));
+#else
         QIcon defaultIcon = QIcon::fromTheme("text-plain");
         QMimeDatabase db;
         if (!QImageReader(fsCurrentPath()+files.at(i)).format().isEmpty()) {
@@ -161,6 +164,7 @@ void BrowserWidget::loadDir(QString path, bool recordHistory, bool firstLoad) {
             QIcon icon = QIcon::fromTheme(db.mimeTypeForFile(fsCurrentPath()+files.at(i)).iconName(),defaultIcon);
             item->setIcon(icon);
         }
+#endif
         fileItems.push_back(item);
     }
 
