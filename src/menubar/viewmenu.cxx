@@ -46,7 +46,11 @@ ViewMenu::ViewMenu() {
     hidden = new QAction("View Hidden Files",this);
 
     hidden->setCheckable(true);
+#ifdef _WIN32
+    hidden->setChecked(false);
+#else
     hidden->setChecked(QVariant(Settings::getSetting("view/hidden","false")).toBool());
+#endif
 
     reload->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_R));
     hidden->setShortcut(QKeySequence(Qt::CTRL+Qt::Key_H));

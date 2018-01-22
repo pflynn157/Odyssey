@@ -215,7 +215,12 @@ void BrowserWidget::reload() {
     }
 
     //Load items in the current directory
-    bool hidden = QVariant(Settings::getSetting("view/hidden","false")).toBool();
+    bool hidden = false;
+#ifdef _WIN32
+    //TODO: Use the registry
+#else
+    hidden = QVariant(Settings::getSetting("view/hidden","false")).toBool();
+#endif
     QStringList dirItems;
     QDir dir(fsCurrentPath());
     if (hidden) {
