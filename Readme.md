@@ -1,7 +1,6 @@
 ## CppExplorer
 
-CppExplorer is a file explorer written in C++ using the Qt framework. It has many of the features you would expect in a file explorer. Currently, all features only work on Linux. However, we are now
-working on porting it to Windows. Several of the features in the list below work, but quite a few don't.
+CppExplorer is a file explorer written in C++ using the Qt framework. It has many of the features you would expect in a file explorer. Currently, all features only work on Linux. It does build and run on Windows, but several features do not work. The build system is CMake. Just run CMake and run make.
 
 1. Tabs (If you are a Linux or Mac user, you will know how great these are)
 2. Theme icon support (pulls from the current theme)
@@ -16,4 +15,3 @@ working on porting it to Windows. Several of the features in the list below work
 11. Drive list (harddrive, usb drive, cd, etc)
 12. Background refresh   
 
-We are currently using the QMake build system. We have plans to convert to CMake in the near future. CppExplorer is not quite ready for everyday use, but we are getting there!
