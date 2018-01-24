@@ -27,10 +27,10 @@
 #include <QIcon>
 
 #include "folder_contextmenu.hh"
-#include "tabwidget.hh"
-#include "clipboard.hh"
-#include "actions.hh"
-#include "trash.hh"
+#include "../tabwidget.hh"
+#include "../clipboard.hh"
+#include "../actions.hh"
+#include "../trash.hh"
 
 FolderContextMenu::FolderContextMenu(BrowserWidget *b) {
     bWidget = b;

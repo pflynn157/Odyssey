@@ -28,9 +28,9 @@
 #include <QKeySequence>
 
 #include "editmenu.hh"
-#include "clipboard.hh"
-#include "tabwidget.hh"
-#include "actions.hh"
+#include "../clipboard.hh"
+#include "../tabwidget.hh"
+#include "../actions.hh"
 
 EditMenu::EditMenu() {
     this->setTitle("Edit");

@@ -27,10 +27,10 @@
 #include <QIcon>
 
 #include "file_contextmenu.hh"
-#include "clipboard.hh"
-#include "actions.hh"
-#include "tabwidget.hh"
-#include "trash.hh"
+#include "../clipboard.hh"
+#include "../actions.hh"
+#include "../tabwidget.hh"
+#include "../trash.hh"
 #include "../dialogs/appchooserdialog.hh"
 
 FileContextMenu::FileContextMenu(BrowserWidget *b) {

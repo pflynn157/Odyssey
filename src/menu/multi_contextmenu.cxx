@@ -25,10 +25,10 @@
 // ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
 // EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include "multi_contextmenu.hh"
-#include "clipboard.hh"
-#include "actions.hh"
-#include "trash.hh"
-#include "tabwidget.hh"
+#include "../clipboard.hh"
+#include "../actions.hh"
+#include "../trash.hh"
+#include "../tabwidget.hh"
 
 MultiContextMenu::MultiContextMenu(BrowserWidget *b) {
     bWidget = b;

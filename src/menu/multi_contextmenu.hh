@@ -29,7 +29,7 @@
 #include <QMenu>
 #include <QAction>
 
-#include "browserwidget.hh"
+#include "../browserwidget.hh"
 
 class MultiContextMenu: public QMenu {
     Q_OBJECT

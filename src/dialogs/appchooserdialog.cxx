@@ -33,7 +33,7 @@
 #include <iostream>
 
 #include "appchooserdialog.hh"
-#include "tabwidget.hh"
+#include "../tabwidget.hh"
 
 AppChooserDialog::AppChooserDialog(QString currentFile)
     : layout(new QVBoxLayout),

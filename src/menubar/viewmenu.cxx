@@ -33,7 +33,7 @@
 #endif
 
 #include "viewmenu.hh"
-#include "tabwidget.hh"
+#include "../tabwidget.hh"
 
 #ifndef _WIN32
 using namespace CppLib;

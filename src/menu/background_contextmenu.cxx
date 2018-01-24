@@ -27,8 +27,8 @@
 #include <QIcon>
 
 #include "background_contextmenu.hh"
-#include "clipboard.hh"
-#include "actions.hh"
+#include "../clipboard.hh"
+#include "../actions.hh"
 
 BackgroundContextMenu::BackgroundContextMenu(BrowserWidget *b) {
     bWidget = b;

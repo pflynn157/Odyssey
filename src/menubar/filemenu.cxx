@@ -29,8 +29,8 @@
 #include <QKeySequence>
 
 #include "filemenu.hh"
-#include "actions.hh"
-#include "tabwidget.hh"
+#include "../actions.hh"
+#include "../tabwidget.hh"
 
 FileMenu::FileMenu(Window *p) {
     parent = p;
