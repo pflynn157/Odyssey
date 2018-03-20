@@ -38,3 +38,8 @@ HelpDialog::~HelpDialog()
 {
     delete ui;
 }
+
+void HelpDialog::on_closeButton_clicked()
+{
+    this->close();
+}

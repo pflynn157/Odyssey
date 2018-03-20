@@ -40,6 +40,9 @@ public:
     explicit HelpDialog(QWidget *parent = 0);
     ~HelpDialog();
 
+private slots:
+    void on_closeButton_clicked();
+
 private:
     Ui::HelpDialog *ui;
 };
