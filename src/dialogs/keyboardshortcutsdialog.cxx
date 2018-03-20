@@ -34,7 +34,10 @@ KeyboardShortcutsDialog::KeyboardShortcutsDialog(QWidget *parent) :
     ui->setupUi(this);
 }
 
-KeyboardShortcutsDialog::~KeyboardShortcutsDialog()
-{
+KeyboardShortcutsDialog::~KeyboardShortcutsDialog() {
     delete ui;
+}
+
+void KeyboardShortcutsDialog::on_closeButton_clicked() {
+    this->close();
 }

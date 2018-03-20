@@ -32,14 +32,13 @@ namespace Ui {
 class KeyboardShortcutsDialog;
 }
 
-class KeyboardShortcutsDialog : public QDialog
-{
+class KeyboardShortcutsDialog : public QDialog {
     Q_OBJECT
-
 public:
     explicit KeyboardShortcutsDialog(QWidget *parent = 0);
     ~KeyboardShortcutsDialog();
-
+private slots:
+    void on_closeButton_clicked();
 private:
     Ui::KeyboardShortcutsDialog *ui;
 };
