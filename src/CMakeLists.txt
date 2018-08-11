@@ -57,3 +57,7 @@ target_link_libraries(CppExplorer
 	Qt5::Gui
 	settings
 )
+
+if (UNIX)
+	install(TARGETS CppExplorer DESTINATION /usr/local/bin)
+endif()
