@@ -1,5 +1,12 @@
 <RCC>
     <qresource prefix="/">
+        <file>icons/places/folder-documents.svg</file>
+        <file>icons/places/folder-download.svg</file>
+        <file>icons/places/folder-pictures.svg</file>
+        <file>icons/places/folder-sound.svg</file>
+        <file>icons/places/folder-templates.svg</file>
+        <file>icons/places/folder-videos.svg</file>
+    
         <file>icons/folder.svg</file>
         <file>icons/file.svg</file>
         <file>icons/go-previous.svg</file>
@@ -22,5 +29,8 @@
         <file>icons/user-trash.svg</file>
         <file>icons/help-about.svg</file>
         <file>icons/system-file-manager.svg</file>
+        <file>icons/drive-removable-media.svg</file>
+        <file>icons/edit-rename.svg</file>
+        <file>icons/document-open.svg</file>
     </qresource>
 </RCC>

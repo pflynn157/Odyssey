@@ -1,45 +1,45 @@
 cmake_minimum_required(VERSION 3.0.0)
-project(CppExplorer)
+project(odyssey)
 
 set(DIALOGS_SRC
-	dialogs/appchooserdialog.cxx
-	dialogs/helpdialog.cxx
+	dialogs/appchooserdialog.cpp
+	dialogs/helpdialog.cpp
 	dialogs/helpdialog.ui
-	dialogs/keyboardshortcutsdialog.cxx
+	dialogs/keyboardshortcutsdialog.cpp
 	dialogs/keyboardshortcutsdialog.ui
 )
 
 set(MENU_SRC
-	menu/background_contextmenu.cxx
-	menu/file_contextmenu.cxx
-	menu/folder_contextmenu.cxx
-	menu/multi_contextmenu.cxx
+	menu/background_contextmenu.cpp
+	menu/file_contextmenu.cpp
+	menu/folder_contextmenu.cpp
+	menu/multi_contextmenu.cpp
 )
 
 set(MENUBAR_SRC
-	menubar/editmenu.cxx
-	menubar/filemenu.cxx
-	menubar/helpmenu.cxx
-	menubar/viewmenu.cxx
+	menubar/editmenu.cpp
+	menubar/filemenu.cpp
+	menubar/helpmenu.cpp
+	menubar/viewmenu.cpp
 )
 
 set(BASE_SRC
 	icons.qrc
 	rsc.qrc
-	actions.cxx
-	addressbar_buttons.cxx
-	addressbar_text.cxx
-	browserwidget.cxx
-	endtoolbar.cxx
-	main.cxx
-	navbar.cxx
-	searchbar.cxx
-	sidebar.cxx
-	tabwidget.cxx
+	actions.cpp
+	addressbar_buttons.cpp
+	addressbar_text.cpp
+	browserwidget.cpp
+	endtoolbar.cpp
+	main.cpp
+	navbar.cpp
+	searchbar.cpp
+	sidebar.cpp
+	tabwidget.cpp
 	tinyxml2.cpp
-	trash.cxx
-	trashbar.cxx
-	window.cxx
+	trash.cpp
+	trashbar.cpp
+	window.cpp
 )
 
 set(SRC
@@ -49,15 +49,11 @@ set(SRC
 	${BASE_SRC}
 )
 
-add_executable(CppExplorer ${SRC})
+add_executable(odyssey ${SRC})
 
-target_link_libraries(CppExplorer
+target_link_libraries(odyssey
 	Qt5::Core
 	Qt5::Widgets
 	Qt5::Gui
-	settings
 )
 
-if (UNIX)
-	install(TARGETS CppExplorer DESTINATION /usr/local/bin)
-endif()
