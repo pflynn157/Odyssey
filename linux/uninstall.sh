@@ -1,9 +1,9 @@
 #!/bin/bash
 echo "Uninstalling..."
 
-rm /opt/uds/bin/uds-explorer
-rm /opt/uds/icons/apps/system-file-manager.svg
-rm /usr/share/applications/uds-explorer.desktop
+rm /usr/local/bin/odyssey
+rm /usr/share/icons/hicolor/scalable/apps/odyssey.svg
+rm /usr/share/applications/odyssey.desktop
 
 update-desktop-database
 
