@@ -1,6 +1,10 @@
-## CppExplorer
+## Odyssey
 
-CppExplorer is a file explorer written in C++ using the Qt framework. It has many of the features you would expect in a file explorer. Currently, all features only work on Linux. It does build and run on Windows, but several features do not work. The build system is CMake. Just run CMake and run make.
+Odyssey is a file explorer written in C++ using the Qt framework. It has many of the features you would expect in a file explorer. Currently, all features only work on Linux. It does build and run on Windows, but several features do not work. The build system is CMake. Just run CMake and run make.
+
+### Features
+
+Here is what is currently supported:
 
 1. Tabs (If you are a Linux or Mac user, you will know how great these are)
 2. Theme icon support (pulls from the current theme)
@@ -14,4 +18,9 @@ CppExplorer is a file explorer written in C++ using the Qt framework. It has man
 10. Places sidebar
 11. Drive list (harddrive, usb drive, cd, etc)
 12. Background refresh   
+
+### Name
+
+If you're curious about the name, there's two reasons. The first is simply because I think its a good name for a file explorer (an odyssey through your file system...). The second is because I named my first significant desktop application- which was also a file explorer- Odyssey, and I have good memories of the time when I worked on it.
+
 
