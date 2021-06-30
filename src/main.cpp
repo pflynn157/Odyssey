@@ -1,7 +1,7 @@
 //
 // Copyright 2021 Patrick Flynn
-// This file is part of uds-explorer.
-// uds-explorer is licensed under the BSD-3 license. See the COPYING file for more information.
+// This file is part of Odyssey file explorer.
+// Odyssey is licensed under the BSD-3 license. See the COPYING file for more information.
 //
 #include <QApplication>
 #include <QString>

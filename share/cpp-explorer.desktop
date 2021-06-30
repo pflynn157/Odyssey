@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
-Name=CppExplorer
-Exec=CppExplorer
+Name=Odyssey
+Exec=odyssey
 Icon=system-file-manager
 Terminal=false
 Categories=System 
