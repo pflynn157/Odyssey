@@ -17,9 +17,10 @@ public:
     ~BackgroundContextMenu();
 private:
     BrowserWidget *bWidget;
-    QAction *newFolder, *newFile, *paste;
+    QAction *newFolder, *newFile, *paste, *terminal;
 private slots:
     void onNewFolderClicked();
     void onNewFileClicked();
     void onPasteClicked();
+    void onTerminalClicked();
 };

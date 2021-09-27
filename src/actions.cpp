@@ -9,6 +9,7 @@
 #include <QInputDialog>
 #include <QDesktopServices>
 #include <QFileInfo>
+#include <QProcess>
 
 #include <actions.hpp>
 #include <clipboard.hpp>
@@ -241,6 +242,15 @@ void Actions::paste() {
     if (clipboard.action==Clipboard_Actions::CUT) {
         clipboard.action = Clipboard_Actions::NONE;
     }
+}
+
+void Actions::openTerminal() {
+    QString path = TabWidget::currentWidget()->fsCurrentPath();
+    
+    QProcess proc;
+    proc.setWorkingDirectory(path);
+    proc.setProgram("odyt");
+    proc.startDetached();
 }
 
 QString Actions::handleDuplicate(QString newAddr, int index) {

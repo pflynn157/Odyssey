@@ -23,4 +23,12 @@ Here is what is currently supported:
 
 If you're curious about the name, there's two reasons. The first is simply because I think its a good name for a file explorer (an odyssey through your file system...). The second is because I named my first significant desktop application- which was also a file explorer- Odyssey, and I have good memories of the time when I worked on it.
 
+### Terminal
+
+Odyssey now has it's own terminal! I wanted to find a way to use the system terminal, but I haven't been successful, and on second thought I'd kind of like to have my own just so it stays portable across systems.
+
+I thought about writing my own (and that's certainly a possibility for down the line), but for now I'm using an unmodified fork of ST, the terminal from Suckless Software. Regardless of what you think of them, their software is good and easy to maintain and work with, and their liberal licensing is nice. The only thing I really did was connect it to the rest of the CMake build system (which will probably give them a heart attack if they ever see it...).
+
+The binary is built as "odyt", and is installed with the rest of the system binaries.
+
 

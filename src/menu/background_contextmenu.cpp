@@ -15,21 +15,26 @@ BackgroundContextMenu::BackgroundContextMenu(BrowserWidget *b) {
     newFolder = new QAction(QPixmap(":/icons/folder-new.svg"), "New Folder", this);
     newFile = new QAction(QPixmap(":/icons/document-new.svg"), "New File", this);
     paste = new QAction(QPixmap(":/icons/edit-paste.svg"), "Paste", this);
+    terminal = new QAction(QPixmap(":/icons/utilities-terminal.svg"), "Open in Terminal", this);
 
     connect(newFolder, &QAction::triggered, this, &BackgroundContextMenu::onNewFolderClicked);
     connect(newFile, &QAction::triggered, this, &BackgroundContextMenu::onNewFileClicked);
     connect(paste, &QAction::triggered, this, &BackgroundContextMenu::onPasteClicked);
+    connect(terminal, &QAction::triggered, this, &BackgroundContextMenu::onTerminalClicked);
 
     this->addAction(newFolder);
     this->addAction(newFile);
     this->addSeparator();
     this->addAction(paste);
+    this->addSeparator();
+    this->addAction(terminal);
 }
 
 BackgroundContextMenu::~BackgroundContextMenu() {
     delete newFolder;
     delete newFile;
     delete paste;
+    delete terminal;
 }
 
 void BackgroundContextMenu::onNewFolderClicked() {
@@ -45,3 +50,6 @@ void BackgroundContextMenu::onPasteClicked() {
     Actions::paste();
 }
 
+void BackgroundContextMenu::onTerminalClicked() {
+    Actions::openTerminal();
+}

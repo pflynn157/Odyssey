@@ -32,5 +32,6 @@
         <file>icons/drive-removable-media.svg</file>
         <file>icons/edit-rename.svg</file>
         <file>icons/document-open.svg</file>
+        <file>icons/utilities-terminal.svg</file>
     </qresource>
 </RCC>

@@ -18,6 +18,7 @@ public:
     static void deleteFile();
     static void deleteFolder();
     static void paste();
+    static void openTerminal();
 private:
     static QString handleDuplicate(QString newAddr, int index);
     static bool copyDirectory(QString oldPath, QString newPath);

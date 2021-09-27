@@ -14,6 +14,7 @@ fi
 mkdir linux_bin
 
 cp src/odyssey linux_bin
+cp terminal/odyt linux_bin
 cp ../src/icons/system-file-manager.svg linux_bin/odyssey.svg
 cp ../linux/* linux_bin
 cp ../COPYING* linux_bin
